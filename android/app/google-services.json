@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "560971488530",
+    "firebase_url": "https://scheduleme-adde6-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "scheduleme-adde6",
+    "storage_bucket": "scheduleme-adde6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560971488530:android:5e17a65ca117c5b8bda7cb",
+        "android_client_info": {
+          "package_name": "com.entropy.scheduleme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560971488530-flivhii8ir1dodr1gchg9hruqcahjgke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi_OEhv40FIuXaefo9on-_O4XSYc6X5yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560971488530-flivhii8ir1dodr1gchg9hruqcahjgke.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "560971488530-onjipaom4goc492ahjl1sf1kqct1b4dp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.entropy.scheduleme"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

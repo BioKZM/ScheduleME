@@ -79,7 +79,7 @@ class _PlannerState extends State<Planner> {
                                     ),
                                     const CircleAvatar(
                                       backgroundImage:
-                                          AssetImage("assets/qRnt.png"),
+                                          AssetImage("assets/book.png"),
                                       radius: 40,
                                     ),
                                     const SizedBox(
@@ -163,7 +163,7 @@ class _PlannerState extends State<Planner> {
                                     ),
                                     const CircleAvatar(
                                       backgroundImage:
-                                          AssetImage("assets/qRnt.png"),
+                                          AssetImage("assets/group.png"),
                                       radius: 40,
                                     ),
                                     const SizedBox(

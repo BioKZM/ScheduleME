@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../services/auth.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -10,6 +12,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
+
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -21,7 +25,8 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/login");
+                  // Navigator.pushNamed(context, "/login");
+                  _auth.signOut();
                 },
                 icon: const Icon(Icons.exit_to_app_rounded),
               )
@@ -35,7 +40,7 @@ class _HomeState extends State<Home> {
                   Row(
                     children: const <Widget>[
                       CircleAvatar(
-                        backgroundImage: AssetImage("assets/qRnt.png"),
+                        backgroundImage: AssetImage("assets/placeholder.jpg"),
                         radius: 40,
                       )
                     ],
@@ -54,7 +59,7 @@ class _HomeState extends State<Home> {
                           Row(
                             children: const <Widget>[
                               Text(
-                                "Berke Akbay",
+                                "Alp Eren SUKAS",
                                 style: TextStyle(
                                   fontFamily: "ArabatoMedium",
                                   fontSize: 22.0,

@@ -1,45 +1,82 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scheduleme/firebase_options.dart';
+import 'package:scheduleme/package/Courses/deleteCourse.dart';
+import 'package:scheduleme/package/Courses/editCourse.dart';
+import 'package:scheduleme/package/StudyPlan/days.dart';
+import 'package:scheduleme/package/StudyPlan/showPlans.dart';
 import 'package:scheduleme/package/settings.dart';
+import 'package:flutter/services.dart';
+import 'package:scheduleme/services/auth.dart';
+import 'package:scheduleme/services/user.dart';
 import 'package/Courses/addCourse.dart';
+import 'package/Courses/showCourses.dart';
 import 'package/StudyPlan/addPlan.dart';
 import 'package/planner.dart';
 import 'package/login.dart';
 import 'package/home.dart';
 import 'package/loading.dart';
 import 'package/absenteeism.dart';
+import 'package/register.dart';
 import 'package/settings.dart';
+import 'package/test.dart';
+import 'services/brewList.dart';
+import 'services/database.dart';
 
-// void test(BuildContext context) {
-//   Navigator.pushNamed(context, "/main");
-// }
-
+// void main() => runApp(Main());
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(
-    title: "ScheduleME",
-    initialRoute: "/loading",
-    routes: {
-      "/loading": (context) => const Loading(),
-      "/login": (context) => const Login(),
-      "/main": (context) => const Main(),
-      "/home": (context) => const Home(),
-      "/absenteeism": (context) => const Absenteeism(),
-      "/planner": (context) => const Planner(),
-      "/addCourse": (context) => const AddCourse(),
-      "/addPlan": (context) => const AddPlan(),
-      "/settings": (context) => const Settings(),
-    },
-    // routes: {
-    //   "/": (context) => Loading(),
-    //   "/settings": (context) => Settings(),
-    //   "/home": (context) => Home(),
-    //   "/courses": (context) => Courses(),
-    //   "/groups": (context) => Groups()
-    // },
-  ));
+  runApp(const HomeMain());
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: []);
+}
+
+class HomeMain extends StatefulWidget {
+  const HomeMain({Key? key}) : super(key: key);
+
+  @override
+  State<HomeMain> createState() => _HomeMainState();
+}
+
+class _HomeMainState extends State<HomeMain> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<FUser?>.value(
+        initialData: FUser(),
+        value: AuthService().user,
+        child: MaterialApp(
+          onGenerateRoute: (settings) {
+            print(settings.name);
+            if (settings.name == "/days") {
+              final args = settings.arguments;
+              print(args);
+            }
+          },
+          title: "ScheduleME",
+          initialRoute: "/loading",
+          routes: {
+            "/loading": (context) => const Loading(),
+            "/login": (context) => const Login(),
+            "/register": (context) => const Register(),
+            "/main": (context) => const Main(),
+            "/home": (context) => const Home(),
+            "/absenteeism": (context) => const Absenteeism(),
+            "/planner": (context) => const Planner(),
+            "/addCourse": (context) => const AddCourse(),
+            "/editCourse": (context) => const EditCourse(),
+            "/deleteCourse": (context) => const DeleteCourse(),
+            "/showCourses": (context) => const ShowCourses(),
+            // "/showPlans": (context) => const ShowPlans(),
+            "/addPlan": (context) => const AddPlan(),
+            "/days": (context) => const DaysPlan(),
+            "/settings": (context) => const Settings_(),
+            "/brewList": (context) => BrewTile(),
+            // "/test": (context) => Test(),
+          },
+          home: const Loading(),
+        ));
+  }
 }
 
 class Main extends StatefulWidget {
@@ -57,7 +94,7 @@ class _MainState extends State<Main> {
     const Home(),
     const Absenteeism(),
     const Planner(),
-    const Settings(),
+    const Settings_(),
   ];
 
   @override
@@ -110,26 +147,3 @@ class _MainState extends State<Main> {
     );
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import 'home.dart';
-// import 'courses.dart';
-
-// class BottomNavBar extends StatefulWidget {
-//   const BottomNavBar({Key? key}) : super(key: key);
-
-//   @override
-//   State<BottomNavBar> createState() => BottomNavBarState();
-// }
-
-// class BottomNavBarState extends State<BottomNavBar> {
-//   
-
-//   // Navigator.pushNamed(context, "/home");,
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return 
-//   }
-// }

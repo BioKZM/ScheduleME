@@ -30,7 +30,8 @@ class _ShowCoursesState extends State<ShowCourses> {
     return StreamBuilder<UserData>(
         stream: DatabaseService(userid: user.userid).userData,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
+            print(snapshot.error.toString());
             UserData? userData = snapshot.data;
             List<CourseList>? courseList = userData?.courses?.entries
                 .map((entry) => CourseList(entry.key, entry.value))

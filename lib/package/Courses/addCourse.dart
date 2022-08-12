@@ -60,7 +60,9 @@ class _AddCourseState extends State<AddCourse> {
         stream: DatabaseService(userid: user.userid).userData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            // print(snapshot.error.toString());
             UserData? userData = snapshot.data;
+
             return Scaffold(
               backgroundColor: Colors.white,
               body: Form(
@@ -194,11 +196,11 @@ class _AddCourseState extends State<AddCourse> {
                                   dynamic result =
                                       await DatabaseService(userid: user.userid)
                                           .addAndChangeCourse(
-                                              userData!.name,
-                                              userData.surname,
+                                              userData?.name,
+                                              userData?.surname,
                                               courses,
-                                              userData.groups,
-                                              userData.plans);
+                                              userData?.groups,
+                                              userData?.plans);
                                   // print(user?.userid);
                                   print(result);
                                   if (result == null) {
@@ -207,10 +209,14 @@ class _AddCourseState extends State<AddCourse> {
                                     showAlertDialog(context);
                                     DersKodu.clear();
                                     DersAdi.clear();
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.pushNamed(context, "/addCourse");
                                   } else {
                                     showAlertDialog(context);
                                     DersKodu.clear();
                                     DersAdi.clear();
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.pushNamed(context, "/addCourse");
                                   }
                                 }
                               },
@@ -242,9 +248,11 @@ class _AddCourseState extends State<AddCourse> {
               ),
             );
           }
-          return const AddCourse();
-          // return const Scaffold(
-          //     body: Center(child: SpinKitWave(color: Colors.red, size: 30)));
+          // print(userData);
+          //return Text("Test");
+          //return const AddCourse();
+          return const Scaffold(
+              body: Center(child: SpinKitWave(color: Colors.red, size: 30)));
         });
   }
 }

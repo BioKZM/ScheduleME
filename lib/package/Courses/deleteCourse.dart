@@ -30,7 +30,7 @@ class _DeleteCourseState extends State<DeleteCourse> {
     return StreamBuilder<UserData>(
         stream: DatabaseService(userid: user.userid).userData,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
             UserData? userData = snapshot.data;
             List<CourseList>? courseList = userData?.courses?.entries
                 .map((entry) => CourseList(entry.key, entry.value))

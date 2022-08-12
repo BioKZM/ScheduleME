@@ -102,12 +102,18 @@ class _EditCourseState extends State<EditCourse> {
     return StreamBuilder<UserData>(
         stream: DatabaseService(userid: user.userid).userData,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
+            print(snapshot.error.toString());
+
             UserData? userData = snapshot.data;
-            List<CourseList>? courseList = userData?.courses?.entries
-                .map((entry) => CourseList(entry.key, entry.value))
-                .toList();
-            print(courseList);
+            Map<String, dynamic>? courseList = userData?.courses;
+            // List<CourseList>? courseList = userData?.courses?.entries
+            //     .map((entry) => CourseList(entry.key, entry.value))
+            //     .toList();
+            // List<CourseList> courseList = userData!.courses!.entries
+            //     .map((e) => CourseList(e.key, e.value))
+            //     .toList();
+            // print(courseList);
 
             return Scaffold(
               body: Column(
@@ -142,7 +148,7 @@ class _EditCourseState extends State<EditCourse> {
                                       print(dict.values.first);
                                       print(courseList);
                                       Map<String, dynamic>? courses =
-                                          userData!.courses;
+                                          userData?.courses;
 
                                       courses?.remove(item.key);
                                       courses?[dict.keys.first] =
@@ -150,11 +156,11 @@ class _EditCourseState extends State<EditCourse> {
                                       dynamic result =
                                           DatabaseService(userid: user.userid)
                                               .addAndChangeCourse(
-                                                  userData.name,
-                                                  userData.surname,
+                                                  userData?.name,
+                                                  userData?.surname,
                                                   courses,
-                                                  userData.groups,
-                                                  userData.plans);
+                                                  userData?.groups,
+                                                  userData?.plans);
                                     });
                                   });
                                 },

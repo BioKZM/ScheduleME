@@ -25,8 +25,8 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               IconButton(
                 onPressed: () {
-                  // Navigator.pushNamed(context, "/login");
                   _auth.signOut();
+                  Navigator.pushNamed(context, "/login");
                 },
                 icon: const Icon(Icons.exit_to_app_rounded),
               )

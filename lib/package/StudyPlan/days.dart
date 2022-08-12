@@ -99,16 +99,18 @@ class _DaysPlanState extends State<DaysPlan> {
     return StreamBuilder<UserData>(
         stream: DatabaseService(userid: user.userid).userData,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
+            print(snapshot.error.toString());
             UserData? userData = snapshot.data;
-            Map<String, dynamic>? planList = userData!.plans;
+            // Map<String, dynamic>? planList = userData?.plans;
             // print(userData?.plans![data]);
             // List<CourseList>? planList = userData?.plans!.entries
             //     .map((entry) => CourseList(entry.key, entry.value))
             //     .toList();
             // print(userData?.plans!['Pazartesi']['08:00 - 09:00']);
-            Map<String, dynamic> liste = userData.plans![data];
-            var sortedKey = liste.keys.toList()..sort();
+            print(userData?.plans);
+            // Map<String, dynamic> liste = userData?.plans![data];
+            // var sortedKey = liste.keys.toList()..sort();
             // Map<String,dynamic> daysList = userData?.plans?
             // List<CourseList>? planList = sortedKey
             //     .map((entry) => CourseList(entry.key, entry.value))
@@ -146,8 +148,8 @@ class _DaysPlanState extends State<DaysPlan> {
                             // print();
 
                             return ListTile(
-                              title: Text(sortedKey[index]),
-                              subtitle: Text(planList![data][sortedKey[index]]),
+                              // title: Text(sortedKey[index]),
+                              // subtitle: Text(planList![data][sortedKey[index]]),
                               trailing: IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -156,23 +158,23 @@ class _DaysPlanState extends State<DaysPlan> {
                                         // print(value);
                                         if (value == "") {
                                           String desc = "Plan yok.";
-                                          planList[data][sortedKey[index]] =
-                                              desc;
+                                          // planList[data][sortedKey[index]] =
+                                          desc;
                                         } else {
                                           String desc = value;
-                                          planList[data][sortedKey[index]] =
-                                              desc;
+                                          // planList[data][sortedKey[index]] =
+                                          desc;
                                         }
 
                                         // planList[data][sortedKey[index]] = desc;
                                         dynamic result =
                                             DatabaseService(userid: user.userid)
                                                 .addAndChangeCourse(
-                                                    userData.name,
-                                                    userData.surname,
-                                                    userData.courses,
-                                                    userData.groups,
-                                                    planList);
+                                                    userData?.name,
+                                                    userData?.surname,
+                                                    userData?.courses,
+                                                    userData?.groups,
+                                                    userData?.plans);
                                         ;
                                         // Map<String, dynamic> dict = value;
                                         // print(dict.keys.first);

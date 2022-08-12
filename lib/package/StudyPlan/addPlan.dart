@@ -44,7 +44,8 @@ class _AddPlanState extends State<AddPlan> {
     return StreamBuilder<UserData>(
         stream: DatabaseService(userid: user.userid).userData,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
+            print(snapshot.hasError.toString());
             UserData? userData = snapshot.data;
             return Scaffold(
                 body: ListView(

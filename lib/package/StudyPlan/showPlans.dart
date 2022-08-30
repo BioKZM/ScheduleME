@@ -1,52 +1,55 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/src/foundation/key.dart';
-// import 'package:flutter/src/widgets/framework.dart';
-// import 'package:provider/provider.dart';
-// import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // import '../../services/database.dart';
 // import '../../services/user.dart';
-// import '../Courses/deleteCourse.dart';
+import '../Courses/deleteCourse.dart';
 
-// class CourseList {
-//   final String key;
-//   final String value;
+class CourseList {
+  final String key;
+  final String value;
 
-//   CourseList(this.key, this.value);
-// }
+  CourseList(this.key, this.value);
+}
 
-// class ShowPlans extends StatefulWidget {
-//   const ShowPlans({Key? key}) : super(key: key);
+class ShowPlans extends StatefulWidget {
+  const ShowPlans({Key? key}) : super(key: key);
 
-//   @override
-//   State<ShowPlans> createState() => _ShowPlansState();
-// }
+  @override
+  State<ShowPlans> createState() => _ShowPlansState();
+}
 
-// class _ShowPlansState extends State<ShowPlans> {
-//   List<String> timeList = [
-//     "06:00 - 07:00",
-//     "07:00 - 08:00",
-//     "08:00 - 09:00",
-//     "09:00 - 10:00",
-//     "10:00 - 11:00",
-//     "11:00 - 12:00",
-//     "12:00 - 13:00",
-//     "13:00 - 14:00",
-//     "14:00 - 15:00",
-//     "15:00 - 16:00",
-//     "16:00 - 17:00",
-//     "17:00 - 18:00",
-//     "18:00 - 19:00",
-//     "19:00 - 20:00",
-//     "20:00 - 21:00",
-//     "21:00 - 22:00",
-//     "22:00 - 23:00",
-//     "23:00 - 00:00",
-//   ];
-//   late String data;
+class _ShowPlansState extends State<ShowPlans> {
+  List<String> timeList = [
+    "06:00 - 07:00",
+    "07:00 - 08:00",
+    "08:00 - 09:00",
+    "09:00 - 10:00",
+    "10:00 - 11:00",
+    "11:00 - 12:00",
+    "12:00 - 13:00",
+    "13:00 - 14:00",
+    "14:00 - 15:00",
+    "15:00 - 16:00",
+    "16:00 - 17:00",
+    "17:00 - 18:00",
+    "18:00 - 19:00",
+    "19:00 - 20:00",
+    "20:00 - 21:00",
+    "21:00 - 22:00",
+    "22:00 - 23:00",
+    "23:00 - 00:00",
+  ];
+  late String data;
 
-//   @override
-//   Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Text("Test"));
+  }
+}
 //     // print(data);
 //     final user = Provider.of<FUser>(context);
 

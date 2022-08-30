@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -5,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:scheduleme/package/register.dart';
 
 import '../main.dart';
-import '../services/user.dart';
+// import '../services/user.dart';
 import 'login.dart';
 
 // class Loading extends StatelessWidget {
@@ -33,8 +34,16 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<FUser>(context);
-    return Login();
+    // final user = Provider.of<FUser>(context);
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      // print(user!.email);
+      return Login();
+    } else {
+      // print(user!.email);
+      return Main();
+    }
     // final user =
     //     Provider.of<FUser>(context) == null ? const Login() : const Main();
     // return user;

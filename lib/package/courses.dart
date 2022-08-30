@@ -20,92 +20,92 @@ class _CoursesState extends State<Courses> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, "/addCourse"),
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Colors.grey.withOpacity(0.4),
-                            ),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(4),
-                            )),
-                        color: Colors.red.withOpacity(0.1),
-                        elevation: 0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                            Icon(
-                              Icons.collections_bookmark_rounded,
-                              size: 40,
-                            ),
-                            Text("Ders Ekle"),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, "/editCourse"),
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Colors.grey.withOpacity(0.4),
-                            ),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(4),
-                            )),
-                        color: Colors.red.withOpacity(0.1),
-                        elevation: 0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                            Icon(
-                              Icons.menu_book_rounded,
-                              size: 40,
-                            ),
-                            Text("Ders Düzenle"),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, "/deleteCourse"),
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Colors.grey.withOpacity(0.4),
-                            ),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(4),
-                            )),
-                        color: Colors.red.withOpacity(0.1),
-                        elevation: 0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                            Icon(Icons.bookmark_remove_rounded, size: 40),
-                            Text("Ders Kaldır"),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: <Widget>[
+              //     GestureDetector(
+              //       onTap: () => Navigator.pushNamed(context, "/addCourse"),
+              //       child: SizedBox(
+              //         width: 100,
+              //         height: 100,
+              //         child: Card(
+              //           shape: RoundedRectangleBorder(
+              //               side: BorderSide(
+              //                 color: Colors.grey.withOpacity(0.4),
+              //               ),
+              //               borderRadius: const BorderRadius.all(
+              //                 Radius.circular(4),
+              //               )),
+              //           color: Colors.red.withOpacity(0.1),
+              //           elevation: 0,
+              //           child: Column(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: const <Widget>[
+              //               Icon(
+              //                 Icons.collections_bookmark_rounded,
+              //                 size: 40,
+              //               ),
+              //               Text("Ders Ekle"),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     GestureDetector(
+              //       onTap: () => Navigator.pushNamed(context, "/editCourse"),
+              //       child: SizedBox(
+              //         width: 100,
+              //         height: 100,
+              //         child: Card(
+              //           shape: RoundedRectangleBorder(
+              //               side: BorderSide(
+              //                 color: Colors.grey.withOpacity(0.4),
+              //               ),
+              //               borderRadius: const BorderRadius.all(
+              //                 Radius.circular(4),
+              //               )),
+              //           color: Colors.red.withOpacity(0.1),
+              //           elevation: 0,
+              //           child: Column(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: const <Widget>[
+              //               Icon(
+              //                 Icons.menu_book_rounded,
+              //                 size: 40,
+              //               ),
+              //               Text("Ders Düzenle"),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     GestureDetector(
+              //       onTap: () => Navigator.pushNamed(context, "/deleteCourse"),
+              //       child: SizedBox(
+              //         width: 100,
+              //         height: 100,
+              //         child: Card(
+              //           shape: RoundedRectangleBorder(
+              //               side: BorderSide(
+              //                 color: Colors.grey.withOpacity(0.4),
+              //               ),
+              //               borderRadius: const BorderRadius.all(
+              //                 Radius.circular(4),
+              //               )),
+              //           color: Colors.red.withOpacity(0.1),
+              //           elevation: 0,
+              //           child: Column(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: const <Widget>[
+              //               Icon(Icons.bookmark_remove_rounded, size: 40),
+              //               Text("Ders Kaldır"),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,

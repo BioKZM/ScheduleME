@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:scheduleme/services/auth.dart';
 
-import '../services/user.dart';
 // import 'courses.dart';
 
 class Login extends StatefulWidget {
@@ -94,7 +91,9 @@ class _LoginState extends State<Login> {
                         if (_formKey.currentState!.validate()) {
                           // print(userInput.text);
                           // print(passwordInput.text);
-                          dynamic user = await _authService.signENP(
+                          // dynamic user = await _authService.signENP(
+                          //     userInput.text, passwordInput.text);
+                          dynamic user = _authService.signIn(
                               userInput.text, passwordInput.text);
                           if (user == null) {
                             setState(

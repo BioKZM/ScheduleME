@@ -2,17 +2,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scheduleme/firebase_options.dart';
-import 'package:scheduleme/package/Courses/deleteCourse.dart';
-import 'package:scheduleme/package/Courses/editCourse.dart';
-import 'package:scheduleme/package/StudyPlan/days.dart';
-import 'package:scheduleme/package/StudyPlan/showPlans.dart';
-import 'package:scheduleme/package/settings.dart';
+// import 'package:scheduleme/package/Courses/deleteCourse.dart';
+// import 'package:scheduleme/package/Courses/editCourse.dart';
+// import 'package:scheduleme/package/StudyPlan/days.dart';
+// import 'package:scheduleme/package/StudyPlan/showPlans.dart';
+// import 'package:scheduleme/package/settings.dart';
 import 'package:flutter/services.dart';
+import 'package:scheduleme/package/Courses/test.dart';
 import 'package:scheduleme/services/auth.dart';
-import 'package:scheduleme/services/user.dart';
+// import 'package:scheduleme/services/user.dart';
 import 'package/Courses/addCourse.dart';
 import 'package/Courses/showCourses.dart';
-import 'package/StudyPlan/addPlan.dart';
+// import 'package/StudyPlan/addPlan.dart';
 import 'package/planner.dart';
 import 'package/login.dart';
 import 'package/home.dart';
@@ -20,9 +21,9 @@ import 'package/loading.dart';
 import 'package/absenteeism.dart';
 import 'package/register.dart';
 import 'package/settings.dart';
-import 'package/test.dart';
-import 'services/brewList.dart';
-import 'services/database.dart';
+// import 'package/test.dart';
+// import 'services/brewList.dart';
+// import 'services/database.dart';
 
 // void main() => runApp(Main());
 void main() async {
@@ -42,40 +43,43 @@ class HomeMain extends StatefulWidget {
 class _HomeMainState extends State<HomeMain> {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<FUser?>.value(
-        initialData: FUser(),
-        value: AuthService().user,
-        child: MaterialApp(
-          onGenerateRoute: (settings) {
-            print(settings.name);
-            if (settings.name == "/days") {
-              final args = settings.arguments;
-              print(args);
-            }
-          },
-          title: "ScheduleME",
-          initialRoute: "/loading",
-          routes: {
-            "/loading": (context) => const Loading(),
-            "/login": (context) => const Login(),
-            "/register": (context) => const Register(),
-            "/main": (context) => const Main(),
-            "/home": (context) => const Home(),
-            "/absenteeism": (context) => const Absenteeism(),
-            "/planner": (context) => const Planner(),
-            "/addCourse": (context) => const AddCourse(),
-            "/editCourse": (context) => const EditCourse(),
-            "/deleteCourse": (context) => const DeleteCourse(),
-            "/showCourses": (context) => const ShowCourses(),
-            // "/showPlans": (context) => const ShowPlans(),
-            "/addPlan": (context) => const AddPlan(),
-            "/days": (context) => const DaysPlan(),
-            "/settings": (context) => const Settings_(),
-            "/brewList": (context) => BrewTile(),
-            // "/test": (context) => Test(),
-          },
-          home: const Loading(),
-        ));
+    // return StreamProvider<FUser?>.value(
+    //     initialData: FUser(),
+    //     value: AuthService().user,
+
+    return MaterialApp(
+      onGenerateRoute: (settings) {
+        print(settings.name);
+        if (settings.name == "/days") {
+          final args = settings.arguments;
+          print(args);
+        }
+      },
+      title: "ScheduleME",
+      initialRoute: "/loading",
+      routes: {
+        "/loading": (context) => const Loading(),
+        "/login": (context) => const Login(),
+        "/register": (context) => const Register(),
+        "/main": (context) => const Main(),
+        "/home": (context) => const Home(),
+        "/absenteeism": (context) => const Absenteeism(),
+        "/planner": (context) => const Planner(),
+        "/addCourse": (context) => const AddCourse(),
+        // "/editCourse": (context) => const EditCourse(),
+        // "/deleteCourse": (context) => const DeleteCourse(),
+        "/showCourses": (context) => const ShowCourses(),
+        // "/showPlans": (context) => const ShowPlans(),
+        // "/addPlan": (context) => const AddPlan(),
+        // "/days": (context) => const DaysPlan(),
+        "/settings": (context) => const Settings_(),
+        "/test": (context) => const Test(),
+        // "/brewList": (context) => BrewTile(),
+        // "/test": (context) => Test(),
+      },
+      home: const Loading(),
+    );
+    // return const Loading();
   }
 }
 
@@ -133,7 +137,10 @@ class _MainState extends State<Main> {
                   label: "Devamsızlık",
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.wysiwyg_rounded, size: 25),
+                  icon: Icon(
+                    Icons.wysiwyg_rounded,
+                    size: 25,
+                  ),
                   label: "Planlayıcı",
                 ),
                 BottomNavigationBarItem(

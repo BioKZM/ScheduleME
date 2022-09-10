@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scheduleme/package/home.dart';
 import 'package:scheduleme/services/auth.dart';
-
-// import 'courses.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -25,9 +24,6 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-// return StreamProvider<FUser?>.value(
-//       initialData: FUser(),
-//       value: AuthService().user,
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +37,6 @@ class _LoginState extends State<Login> {
               children: <Widget>[
                 SingleChildScrollView(
                   child: Container(
-                    // padding: EdgeInsets.symmetric(vertical: 0),
-                    // color: Colors.red,
                     width: 300,
                     height: 65,
                     child: TextFormField(
@@ -53,8 +47,6 @@ class _LoginState extends State<Login> {
                       controller: userInput,
                       decoration: const InputDecoration(
                         counterText: ' ',
-                        // contentPadding:
-                        //     EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                         border: OutlineInputBorder(),
                         hintText: "E-posta: ",
                       ),
@@ -84,33 +76,24 @@ class _LoginState extends State<Login> {
                   height: 20,
                 ),
                 Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          // print(userInput.text);
-                          // print(passwordInput.text);
-                          // dynamic user = await _authService.signENP(
-                          //     userInput.text, passwordInput.text);
                           dynamic user = _authService.signIn(
                               userInput.text, passwordInput.text);
                           if (user == null) {
                             setState(
                                 () => error = "E-posta veya şifre yanlış.");
                           } else {
-                            Navigator.popAndPushNamed(context, "/main");
+                            Future.delayed(const Duration(seconds: 1), () {
+                              Navigator.pushNamed(
+                                context,
+                                "/main",
+                              );
+                            });
+                            // Navigator.pushNamed(context, "/main");
                           }
-                          // if (user != null) {
-                          //   print("Welcome!");
-                          //   print(user.userid);
-                          //   // ignore: use_build_context_synchronously
-                          //   Navigator.popAndPushNamed(context, "/main");
-                          // } else {
-                          //   print(
-                          //       "An Error has occurred. Please try again later.");
-                          //   print(user.userid);
-                          // }
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -126,7 +109,10 @@ class _LoginState extends State<Login> {
                     ),
                     OutlinedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, "/register");
+                        Navigator.pushNamed(
+                          context,
+                          "/register",
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         onPrimary: Colors.red,

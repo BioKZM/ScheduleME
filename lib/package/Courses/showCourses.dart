@@ -25,7 +25,9 @@ class _ShowCoursesState extends State<ShowCourses> {
   final _firestore = FirebaseFirestore.instance;
   User? user = FirebaseAuth.instance.currentUser;
   final courseNameInput = TextEditingController();
+  final courseCodeInput = TextEditingController();
   final absInput = TextEditingController();
+  final maxInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,64 +52,148 @@ class _ShowCoursesState extends State<ShowCourses> {
                     child: ListView.builder(
                       itemCount: courses.length,
                       itemBuilder: (context, index) {
-                        return Card(
-                          child: ListTile(
-                            title: Text('${courses[index]["courseName"]}'),
-                            subtitle:
-                                Text('Devamsızlık : ${courses[index]["abs"]}'),
-                            trailing: IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () async {
-                                  var result = await showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text(
-                                            "Uyarı",
-                                            style: TextStyle(
-                                                fontFamily: "NotoSansBold"),
+                        if (courses.length == 0) {
+                          return Container();
+                        } else {
+                          return Card(
+                            child: ListTile(
+                              onTap: () async {
+                                var result = await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                          "Düzenle",
+                                          style: TextStyle(
+                                              fontFamily: "NotoSansBold"),
+                                        ),
+                                        actions: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                width: 250,
+                                                child: TextFormField(
+                                                  controller: absInput,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                    hintText:
+                                                        "Mevcut Devamsızlık",
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              SizedBox(
+                                                width: 250,
+                                                child: TextFormField(
+                                                  controller: maxInput,
+                                                  decoration: const InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      hintText:
+                                                          "Maksimum Devamsızlık"),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                        context, 'false');
+                                                  },
+                                                  child: const Text(
+                                                    "İptal",
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          "NotoSansBold",
+                                                      color: Colors.red,
+                                                    ),
+                                                  )),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                        context, 'true');
+                                                  },
+                                                  child: const Text(
+                                                    "Kaydet",
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          "NotoSansBold",
+                                                      color: Colors.red,
+                                                    ),
+                                                  )),
+                                            ],
                                           ),
-                                          content: const Text(
-                                              "Kaydı silmek istediğine emin misin?"),
-                                          actions: [
-                                            TextButton(
+                                        ],
+                                      );
+                                    });
+                                if (result == "true") {
+                                  courses[index]['max'] = maxInput.text;
+                                  courses[index]['abs'] = absInput.text;
+                                  await userData.update({'courses': courses});
+                                }
+                              },
+                              title: Text(
+                                  '${courses[index]["courseName"]} (${courses[index]["courseCode"]})'),
+                              subtitle: Text(
+                                  'Devamsızlık : ${courses[index]["abs"]}/${courses[index]["max"]}'),
+                              trailing: IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () async {
+                                    var result = await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                              "Uyarı",
+                                              style: TextStyle(
+                                                  fontFamily: "NotoSansBold"),
+                                            ),
+                                            content: const Text(
+                                                "Kaydı silmek istediğine emin misin?"),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                        context, 'false');
+                                                  },
+                                                  child: const Text(
+                                                    "Hayır",
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            "NotoSansBold",
+                                                        color: Colors.red),
+                                                  )),
+                                              TextButton(
                                                 onPressed: () {
                                                   Navigator.pop(
-                                                      context, 'false');
+                                                      context, 'true');
                                                 },
                                                 child: const Text(
-                                                  "Hayır",
+                                                  "Evet",
                                                   style: TextStyle(
                                                       fontFamily:
                                                           "NotoSansBold",
                                                       color: Colors.red),
-                                                )),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context, 'true');
-                                              },
-                                              child: const Text(
-                                                "Evet",
-                                                style: TextStyle(
-                                                    fontFamily: "NotoSansBold",
-                                                    color: Colors.red),
-                                              ),
-                                            )
-                                          ],
-                                        );
-                                      });
-                                  if (result == 'true') {
-                                    courses.remove(courses[index]);
-                                    Map<String, dynamic> veri = {
-                                      'name': list['name'],
-                                      'surname': list['surname'],
-                                      'courses': courses,
-                                    };
-                                    await userData.set(veri);
-                                  }
-                                }),
-                          ),
-                        );
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        });
+                                    if (result == 'true') {
+                                      courses.remove(courses[index]);
+                                      await userData
+                                          .update({'courses': courses});
+                                    }
+                                  }),
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),
@@ -125,8 +211,6 @@ class _ShowCoursesState extends State<ShowCourses> {
                                     style:
                                         TextStyle(fontFamily: "NotoSansBold"),
                                   ),
-                                  // content: const Text(
-                                  //     "Kaydı silmek istediğine emin misin?"),
                                   actions: [
                                     Column(
                                       mainAxisAlignment:
@@ -144,6 +228,16 @@ class _ShowCoursesState extends State<ShowCourses> {
                                             ),
                                           ),
                                         ),
+                                        SizedBox(
+                                          width: 250,
+                                          child: TextFormField(
+                                            controller: courseCodeInput,
+                                            decoration: const InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              hintText: "Ders Kodu",
+                                            ),
+                                          ),
+                                        ),
                                         const SizedBox(
                                           height: 10,
                                         ),
@@ -153,16 +247,29 @@ class _ShowCoursesState extends State<ShowCourses> {
                                             controller: absInput,
                                             decoration: const InputDecoration(
                                                 border: OutlineInputBorder(),
+                                                hintText: "Mevcut Devamsızlık"),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 250,
+                                          child: TextFormField(
+                                            controller: maxInput,
+                                            decoration: const InputDecoration(
+                                                border: OutlineInputBorder(),
                                                 hintText:
-                                                    "Maksimum devamsızlık"),
+                                                    "Maksimum Devamsızlık"),
                                           ),
                                         ),
                                         TextButton(
                                             onPressed: () {
+                                              courseNameInput.clear();
+                                              courseCodeInput.clear();
+                                              absInput.clear();
+                                              maxInput.clear();
                                               Navigator.pop(context, 'false');
                                             },
                                             child: const Text(
-                                              "Hayır",
+                                              "İptal",
                                               style: TextStyle(
                                                 fontFamily: "NotoSansBold",
                                                 color: Colors.red,
@@ -173,7 +280,7 @@ class _ShowCoursesState extends State<ShowCourses> {
                                               Navigator.pop(context, 'true');
                                             },
                                             child: const Text(
-                                              "Evet",
+                                              "Ekle",
                                               style: TextStyle(
                                                 fontFamily: "NotoSansBold",
                                                 color: Colors.red,
@@ -188,16 +295,16 @@ class _ShowCoursesState extends State<ShowCourses> {
                           if (result == 'true') {
                             Map<String, dynamic> map = {
                               "courseName": courseNameInput.text,
-                              "abs": absInput.text
+                              "courseCode": courseCodeInput.text,
+                              "abs": absInput.text,
+                              "max": maxInput.text,
                             };
-                            // courses.remove(courses[index]);
                             courses.add(map);
-                            Map<String, dynamic> veri = {
-                              'name': list['name'],
-                              'surname': list['surname'],
-                              'courses': courses,
-                            };
-                            await userData.set(veri);
+                            courseNameInput.clear();
+                            courseCodeInput.clear();
+                            absInput.clear();
+                            maxInput.clear();
+                            await userData.update({'courses': courses});
                           }
                         },
                         backgroundColor: Colors.red,
@@ -210,95 +317,7 @@ class _ShowCoursesState extends State<ShowCourses> {
             } else {
               return const Center(child: CircularProgressIndicator());
             }
-            // var user = snapshot.connectionState;
-            // print(snapshot.connectionState);
-            // // var userName = user['name'];
-            // return Text('${snapshot.data}');
-            // if (snapshot.hasData &&
-            //     snapshot.connectionState == ConnectionState.active) {
-            //   return Text('${snapshot.data.data()}');
-            // } else {
-            //   return Text('Yükleniyor');
-            // }
-
-            // List<DocumentSnapshot> list = snapshot.data.docs;
-            // if (snapshot.hasError) {
-            //   return Center(child: Text("Bir hata oluştu"));
-            // } else {
-            //   if (snapshot.hasData) {
-            //     return Flexible(
-            //       child: ListView.builder(
-            //         itemCount: list.length,
-            //         itemBuilder: (context, index) {
-            //           return Card(
-            //               child: ListTile(
-            //                   title: Text(
-            //             '${list[index].data()}',
-            //           )));
-            //         },
-            //       ),
-            //     );
-            //   } else {
-            //     return Center(child: CircularProgressIndicator());
-            //   }
-            // }
-            // var recievedData = snapshot.data;
-            // return Text('${asnapshot.data.docs}');
-            // return Text('${snapshot.data.data()}');
           })
     ])));
-
-    // return const Scaffold(
-    //     body: Center(child: SpinKitWave(color: Colors.red, size: 30)));
-
-    // final user = Provider.of<FUser>(context);
-
-    // return StreamBuilder<UserData>(
-    //     stream: DatabaseService(userid: user.userid).userData,
-    //     builder: (context, snapshot) {
-    //       if (snapshot.hasError) {
-    //         print(snapshot.error.toString());
-    //         UserData? userData = snapshot.data;
-    //         List<CourseList>? courseList = userData?.courses?.entries
-    //             .map((entry) => CourseList(entry.key, entry.value))
-    //             .toList();
-
-    //         return Scaffold(
-    //           body: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             children: [
-    //               IconButton(
-    //                 onPressed: () {
-    //                   Navigator.pop(context);
-    //                 },
-    //                 icon: Icon(Icons.arrow_back_rounded),
-    //               ),
-    //               Column(
-    //                 children: [
-    //                   ListView.separated(
-    //                     scrollDirection: Axis.vertical,
-    //                     shrinkWrap: true,
-    //                     separatorBuilder: (BuildContext context, int index) =>
-    //                         const Divider(),
-    //                     itemBuilder: (context, index) {
-    //                       final item = courseList![index];
-
-    //                       return ListTile(
-    //                         title: Text(item.key),
-    //                         subtitle: Text(item.value),
-    //                       );
-    //                     },
-    //                     itemCount: courseList!.length,
-    //                   ),
-    //                 ],
-    //               ),
-    //             ],
-    //           ),
-    //         );
-    //       }
-
-    //       return const Scaffold(
-    //           body: Center(child: SpinKitWave(color: Colors.red, size: 30)));
-    //     });
   }
 }

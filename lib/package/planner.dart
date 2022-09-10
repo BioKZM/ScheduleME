@@ -136,7 +136,10 @@ class _PlannerState extends State<Planner> {
                       height: 25,
                     ),
                     GestureDetector(
-                      onTap: () => print("qRnt"),
+                      // onTap: () => print("qRnt"),
+                      onTap: () {
+                        Navigator.pushNamed(context, "/searchGroups");
+                      },
                       child: Row(
                         children: [
                           SizedBox(

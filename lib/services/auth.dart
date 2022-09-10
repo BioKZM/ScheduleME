@@ -18,14 +18,49 @@ class AuthService {
     return await _auth.signOut();
   }
 
-  Future<User?> registerENP(
-      String name, String surname, String email, String password) async {
+  Future<User?> registerENP(String name, String surname, String email,
+      String password, String class_) async {
+    var plans = [
+      {
+        'dayName': "Pazartesi",
+        "plans": [],
+      },
+      {
+        'dayName': "Salı",
+        "plans": [],
+      },
+      {
+        'dayName': "Çarşamba",
+        "plans": [],
+      },
+      {
+        'dayName': "Perşembe",
+        "plans": [],
+      },
+      {
+        'dayName': "Cuma",
+        "plans": [],
+      },
+      {
+        'dayName': "Cumartesi",
+        "plans": [],
+      },
+      {
+        'dayName': "Pazar",
+        "plans": [],
+      },
+    ];
     UserCredential user = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
-    await _firestore
-        .collection("User")
-        .doc(user.user?.uid)
-        .set({'name': name, 'surname': surname, 'email': email});
+    await _firestore.collection("brews").doc(user.user?.email).set({
+      'name': "${name} ${surname}",
+      'email': email,
+      "class": class_,
+      "courses": [],
+      "groups": [],
+      "plans": plans,
+      "tasks": []
+    });
     return user.user;
   }
 }

@@ -17,6 +17,7 @@ class _RegisterState extends State<Register> {
   final passwordInput = TextEditingController();
   final nameInput = TextEditingController();
   final surnameInput = TextEditingController();
+  final classInput = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String error = "";
 
@@ -34,9 +35,9 @@ class _RegisterState extends State<Register> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: Icon(Icons.arrow_back_rounded)),
+                    icon: const Icon(Icons.arrow_back_rounded)),
               ]),
-          SizedBox(
+          const SizedBox(
             height: 70,
           ),
           Row(
@@ -57,13 +58,13 @@ class _RegisterState extends State<Register> {
                             height: 65,
                             child: TextFormField(
                               validator: (val) => val!.isEmpty
-                                  ? 'İsim kısmı boş burakılamaz'
+                                  ? 'Ad kısmı boş bırakılamaz'
                                   : null,
                               controller: nameInput,
                               decoration: const InputDecoration(
                                 counterText: ' ',
                                 border: OutlineInputBorder(),
-                                hintText: "İsim: ",
+                                hintText: "Ad: ",
                               ),
                             ),
                           ),
@@ -76,14 +77,13 @@ class _RegisterState extends State<Register> {
                             height: 65,
                             child: TextFormField(
                               validator: (val) => val!.isEmpty
-                                  ? 'Soy isim kısmı boş burakılamaz'
+                                  ? 'Soyad kısmı boş bırakılamaz'
                                   : null,
                               controller: surnameInput,
-                              // obscureText: true,
                               decoration: const InputDecoration(
                                 counterText: ' ',
                                 border: OutlineInputBorder(),
-                                hintText: "Soy İsim: ",
+                                hintText: "Soyad: ",
                               ),
                             ),
                           ),
@@ -91,22 +91,35 @@ class _RegisterState extends State<Register> {
                             width: 0,
                             height: 20,
                           ),
-                          SingleChildScrollView(
-                            child: Container(
-                              // padding: EdgeInsets.symmetric(vertical: 0),
-                              // color: Colors.red,
+                          SizedBox(
                               width: 300,
                               height: 65,
                               child: TextFormField(
-                                // maxLength: 20,
+                                validator: (val) => val!.isEmpty
+                                    ? 'Bölüm boş bırakılamaz'
+                                    : null,
+                                controller: classInput,
+                                decoration: const InputDecoration(
+                                  counterText: ' ',
+                                  border: OutlineInputBorder(),
+                                  hintText: "Bölüm: ",
+                                ),
+                              )),
+                          const SizedBox(
+                            width: 0,
+                            height: 20,
+                          ),
+                          SingleChildScrollView(
+                            child: Container(
+                              width: 300,
+                              height: 65,
+                              child: TextFormField(
                                 validator: (val) => val!.isEmpty
                                     ? 'E-posta kısmı boş bırakılamaz.'
                                     : null,
                                 controller: userInput,
                                 decoration: const InputDecoration(
                                   counterText: ' ',
-                                  // contentPadding:
-                                  //     EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                                   border: OutlineInputBorder(),
                                   hintText: "E-posta: ",
                                 ),
@@ -145,17 +158,20 @@ class _RegisterState extends State<Register> {
                               OutlinedButton(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
+                                    print(userInput.text);
                                     dynamic result =
                                         await _authService.registerENP(
-                                      userInput.text,
-                                      passwordInput.text,
                                       nameInput.text,
                                       surnameInput.text,
+                                      userInput.text,
+                                      passwordInput.text,
+                                      classInput.text,
                                     );
                                     if (result == null) {
                                       setState(() => error =
                                           "Lütfen geçerli bir e-posta adresi giriniz.");
                                     } else {
+                                      // ignore: use_build_context_synchronously
                                       Navigator.popAndPushNamed(
                                           context, "/main");
                                     }

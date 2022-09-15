@@ -29,13 +29,11 @@ class _SearchGroupsState extends State<SearchGroups> {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.active) {
-                // List<DocumentSnapshot> doc = snapshot.data.docs;
                 List<DocumentSnapshot> doc = snapshot.data.docs;
-                // var groups = list['groups'];
                 return Column(
                   children: [
                     SizedBox(
-                        height: 300,
+                        height: MediaQuery.of(context).size.height * 1,
                         child: ListView.builder(
                           itemCount: doc.length,
                           itemBuilder: (context, index) {
@@ -90,7 +88,43 @@ class _SearchGroupsState extends State<SearchGroups> {
                                         },
                                       );
                                       if (result == "true") {
-                                        if (doc[index]['members'].length !=
+                                        var groups = (await _firestore
+                                            .collection("brews")
+                                            .doc(user!.email)
+                                            .get())['groups'];
+
+                                        if (groups.length == 10) {
+                                          await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                    "Uyarı",
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            "NotoSansBold",
+                                                        color: Colors.red),
+                                                  ),
+                                                  content: const Text(
+                                                      "En fazla 10 tane aktif grubun olabilir."),
+                                                  actions: [
+                                                    TextButton(
+                                                      child: const Text(
+                                                        "Tamam",
+                                                        style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontFamily:
+                                                                "NotoSansBold"),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    )
+                                                  ],
+                                                );
+                                              });
+                                        } else if (doc[index]['members']
+                                                .length !=
                                             doc[index]['maximumMemberCount']) {
                                           var members = doc[index]['members'];
                                           members.add(user!.email);
@@ -117,6 +151,36 @@ class _SearchGroupsState extends State<SearchGroups> {
                                                   ),
                                                   content: const Text(
                                                       "Gruba başarıyla katıldın."),
+                                                  actions: [
+                                                    TextButton(
+                                                      child: const Text(
+                                                        "Tamam",
+                                                        style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontFamily:
+                                                                "NotoSansBold"),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    )
+                                                  ],
+                                                );
+                                              });
+                                        } else {
+                                          await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                    "Uyarı",
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            "NotoSansBold",
+                                                        color: Colors.red),
+                                                  ),
+                                                  content: const Text(
+                                                      "Bu grup dolu! Lütfen daha sonra tekrar dene."),
                                                   actions: [
                                                     TextButton(
                                                       child: const Text(

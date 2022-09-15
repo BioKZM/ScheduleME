@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Settings_ extends StatefulWidget {
   const Settings_({Key? key}) : super(key: key);
@@ -10,13 +15,15 @@ class Settings_ extends StatefulWidget {
 }
 
 class _Settings_State extends State<Settings_> {
-  final nameInput = TextEditingController();
-  final classInput = TextEditingController();
+  TextEditingController nameInput = TextEditingController();
+  TextEditingController classInput = TextEditingController();
   final _firestore = FirebaseFirestore.instance;
+  final _firebase = FirebaseStorage.instance;
   User? user = FirebaseAuth.instance.currentUser;
-  var nameVariable = "";
-  bool nameSwap = false;
-  bool classSwap = false;
+  // var nameVariable = "";
+  var imageURL;
+  bool swap = false;
+  ImagePicker picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +35,8 @@ class _Settings_State extends State<Settings_> {
     Widget nameEditIcon = Container();
     Widget classBox = Container();
     Widget classEditIcon = Container();
+    Widget iconButton = Container();
+    Widget iconBox = Container();
 
     return Scaffold(
       body: StreamBuilder<DocumentSnapshot>(
@@ -38,8 +47,11 @@ class _Settings_State extends State<Settings_> {
             var list = snapshot.data.data();
             var name = list['name'];
             var class_ = list['class'];
+            var imageURL = list['imageURL'];
+            nameInput.text = name;
+            classInput.text = class_;
 
-            if (nameSwap == true) {
+            if (swap == true) {
               nameBox = Column(
                 children: [
                   SizedBox(
@@ -47,62 +59,18 @@ class _Settings_State extends State<Settings_> {
                       height: 40,
                       child: TextFormField(
                         controller: nameInput,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: nameVariable,
+                        cursorColor: Colors.red,
+                        decoration: const InputDecoration(
+                          // fillColor: Colors.red,
+                          labelText: "İsim",
+                          labelStyle: TextStyle(color: Colors.red),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                         ),
                       )),
-                ],
-              );
-              classBox = Column(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 250,
-                    color: Colors.grey,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        class_,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-
-              nameEditIcon = Column(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(
-                        () {
-                          userData.update({'name': nameInput.text});
-                          nameSwap = !nameSwap;
-                        },
-                      );
-                    },
-                    icon: Icon(Icons.check),
-                  ),
-                ],
-              );
-            } else if (classSwap == true) {
-              nameBox = Column(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 250,
-                    color: Colors.grey,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        name,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
                 ],
               );
               classBox = Column(
@@ -112,88 +80,159 @@ class _Settings_State extends State<Settings_> {
                       height: 40,
                       child: TextFormField(
                         controller: classInput,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: nameVariable,
+                        decoration: const InputDecoration(
+                          labelText: "Bölüm",
+                          labelStyle: TextStyle(color: Colors.red),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                         ),
                       )),
                 ],
               );
-              classEditIcon = Column(
+              iconButton = Column(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(
-                        () {
-                          userData.update({'class': classInput.text});
-                          classSwap = !classSwap;
+                  Padding(
+                    padding: const EdgeInsets.only(left: 340),
+                    child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            swap = !swap;
+                          });
+                          userData.update({
+                            'name': nameInput.text,
+                            'class': classInput.text
+                          });
                         },
-                      );
-                    },
-                    icon: Icon(Icons.check),
+                        icon: const Icon(Icons.check)),
+                  ),
+                ],
+              );
+              iconBox = Column(
+                children: [
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 70,
+                        backgroundImage: NetworkImage(imageURL),
+                        backgroundColor: Colors.transparent,
+                      ),
+                      Positioned(
+                        left: 98,
+                        bottom: 105,
+                        child: IconButton(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onPressed: () async {
+                            await Permission.photos.request();
+
+                            var permissionStatus =
+                                await Permission.photos.status;
+                            if (permissionStatus.isGranted) {
+                              XFile? image = await picker.pickImage(
+                                  source: ImageSource.gallery);
+                              var file = File(image!.path);
+
+                              var snapshot = await _firebase
+                                  .ref()
+                                  .child("${user!.email}/image.jpg")
+                                  .putFile(file);
+                              var downloadURL =
+                                  await snapshot.ref.getDownloadURL();
+                              await userData.update({'imageURL': downloadURL});
+                            }
+                          },
+                          icon: const Icon(Icons.camera_alt, size: 23),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               );
             } else {
-              nameBox = Column(
+              nameBox = Row(
                 children: [
+                  const Text(
+                    "İsim:",
+                    style: TextStyle(fontFamily: "NotoSansBold", fontSize: 17),
+                  ),
+                  const SizedBox(
+                    width: 33,
+                  ),
                   Container(
                     height: 40,
-                    width: 250,
-                    color: Colors.grey,
+                    width: 225,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(3)),
                     child: Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: const Alignment(-0.9, 0),
                       child: Text(
                         name,
-                        style: TextStyle(color: Colors.white),
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ),
                   ),
                 ],
               );
-              classBox = Column(
+              classBox = Row(
                 children: [
+                  const Text(
+                    "Bölüm:",
+                    style: TextStyle(fontFamily: "NotoSansBold", fontSize: 17),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
                   Container(
                     height: 40,
-                    width: 250,
-                    color: Colors.grey,
+                    width: 225,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(3)),
+                    // color: Colors.grey,
                     child: Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: const Alignment(-0.9, 0),
                       child: Text(
                         class_,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ),
                   ),
                 ],
               );
-              nameEditIcon = Column(
+              iconBox = Column(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(
-                        () {
-                          nameSwap = !nameSwap;
-                        },
-                      );
-                    },
-                    icon: Icon(Icons.mode_edit_outlined),
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 70,
+                        backgroundImage: NetworkImage(imageURL),
+                        backgroundColor: Colors.transparent,
+                      ),
+                    ],
                   ),
                 ],
               );
-              classEditIcon = Column(
+              iconButton = Column(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(
-                        () {
-                          classSwap = !classSwap;
+                  Padding(
+                    padding: const EdgeInsets.only(left: 340),
+                    child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            swap = !swap;
+                          });
                         },
-                      );
-                    },
-                    icon: Icon(Icons.mode_edit_outlined),
+                        icon: const Icon(Icons.edit)),
                   ),
                 ],
               );
@@ -204,29 +243,14 @@ class _Settings_State extends State<Settings_> {
               children: [
                 Column(
                   children: [
+                    Column(
+                      children: [iconButton],
+                    ),
                     const Padding(
                       padding: EdgeInsets.only(top: 100),
                     ),
                     Row(
-                      children: [
-                        Stack(
-                          children: [
-                            const CircleAvatar(
-                              backgroundImage:
-                                  AssetImage("assets/placeholder.jpg"),
-                              radius: 40,
-                            ),
-                            Positioned(
-                              left: 40,
-                              bottom: 45,
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.camera_alt, size: 23),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      children: [iconBox],
                     ),
                     Row(
                       children: const [
@@ -238,6 +262,14 @@ class _Settings_State extends State<Settings_> {
                     ),
                     Row(
                       children: [nameBox, nameEditIcon],
+                    ),
+                    Row(
+                      children: const [
+                        SizedBox(
+                          height: 15,
+                          width: 250,
+                        ),
+                      ],
                     ),
                     Row(
                       children: [classBox, classEditIcon],

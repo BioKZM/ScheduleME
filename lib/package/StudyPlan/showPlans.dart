@@ -40,7 +40,7 @@ class _ShowPlansState extends State<ShowPlans> {
               return Column(
                 children: [
                   SizedBox(
-                    height: 600,
+                    height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
                       itemCount: plans.length,
                       itemBuilder: (context, index) {

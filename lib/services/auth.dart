@@ -59,7 +59,9 @@ class AuthService {
       "courses": [],
       "groups": [],
       "plans": plans,
-      "tasks": []
+      "tasks": [],
+      "imageURL":
+          "https://firebasestorage.googleapis.com/v0/b/scheduleme-adde6.appspot.com/o/placeholder.jpg?alt=media&token=9cfa9b9d-eb60-409b-8a5f-b3b54a5c1b10"
     });
     return user.user;
   }

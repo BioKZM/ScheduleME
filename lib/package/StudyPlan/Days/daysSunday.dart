@@ -36,7 +36,7 @@ class _daysSundayState extends State<daysSunday> {
                     return Column(
                       children: [
                         SizedBox(
-                          height: 400,
+                          height: MediaQuery.of(context).size.height * 0.87,
                           child: ListView.builder(
                             itemCount: plans.length,
                             itemBuilder: (context, index) {
@@ -63,59 +63,100 @@ class _daysSundayState extends State<daysSunday> {
                                                       CrossAxisAlignment.center,
                                                   children: [
                                                     SizedBox(
-                                                      width: 250,
+                                                      height: 50,
                                                       child: TextFormField(
-                                                          controller:
-                                                              planNameInput,
-                                                          decoration:
-                                                              const InputDecoration(
-                                                            border:
-                                                                OutlineInputBorder(),
-                                                            hintText:
-                                                                "Plan İsmi",
-                                                          )),
+                                                        controller:
+                                                            planNameInput,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          // fillColor: Colors.red,
+                                                          labelText:
+                                                              "Plan İsmi",
+                                                          labelStyle: TextStyle(
+                                                              color: Colors
+                                                                  .black54),
+                                                          border: OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color: Colors
+                                                                          .red)),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .red),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
                                                     const SizedBox(
                                                       height: 10,
                                                     ),
                                                     SizedBox(
-                                                      width: 250,
+                                                      height: 50,
                                                       child: TextFormField(
                                                         controller:
                                                             planDescriptionInput,
-                                                        decoration: const InputDecoration(
-                                                            border:
-                                                                OutlineInputBorder(),
-                                                            hintText:
-                                                                "Plan Açıklaması"),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          // fillColor: Colors.red,
+                                                          labelText:
+                                                              "Plan Açıklaması",
+                                                          labelStyle: TextStyle(
+                                                              color: Colors
+                                                                  .black54),
+                                                          border: OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color: Colors
+                                                                          .red)),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .red),
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
-                                                    TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context, 'false');
-                                                        },
-                                                        child: const Text(
-                                                          "İptal",
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                "NotoSansBold",
-                                                            color: Colors.red,
-                                                          ),
-                                                        )),
-                                                    TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context, 'true');
-                                                        },
-                                                        child: const Text(
-                                                          "Kaydet",
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                "NotoSansBold",
-                                                            color: Colors.red,
-                                                          ),
-                                                        )),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  'false');
+                                                            },
+                                                            child: const Text(
+                                                              "İptal",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "NotoSansBold",
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                            )),
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  'true');
+                                                            },
+                                                            child: const Text(
+                                                              "Kaydet",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "NotoSansBold",
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    ),
                                                   ],
                                                 )
                                               ],
@@ -197,7 +238,7 @@ class _daysSundayState extends State<daysSunday> {
                         SizedBox(
                           child: Padding(
                               padding:
-                                  const EdgeInsets.only(top: 300, left: 300),
+                                  const EdgeInsets.only(top: 20, left: 300),
                               child: FloatingActionButton(
                                 onPressed: () async {
                                   var result = await showDialog(
@@ -217,56 +258,95 @@ class _daysSundayState extends State<daysSunday> {
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 SizedBox(
-                                                    width: 250,
+                                                    height: 50,
                                                     child: TextFormField(
                                                       controller: planNameInput,
+                                                      cursorColor: Colors.red,
                                                       decoration:
                                                           const InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        hintText: "Plan İsmi",
+                                                        labelText: "Plan İsmi",
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.black54),
+                                                        border: OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .red)),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .red),
+                                                        ),
                                                       ),
                                                     )),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
                                                 SizedBox(
-                                                    width: 250,
+                                                    height: 50,
                                                     child: TextFormField(
                                                       controller:
                                                           planDescriptionInput,
+                                                      cursorColor: Colors.red,
                                                       decoration:
                                                           const InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        hintText:
+                                                        labelText:
                                                             "Plan Açıklaması",
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.black54),
+                                                        border: OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .red)),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .red),
+                                                        ),
                                                       ),
                                                     )),
-                                                TextButton(
-                                                    onPressed: () {
-                                                      planNameInput.clear();
-                                                      planDescriptionInput
-                                                          .clear();
-                                                      Navigator.pop(
-                                                          context, "false");
-                                                    },
-                                                    child: const Text(
-                                                      "İptal",
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "NotoSansBold",
-                                                      ),
-                                                    )),
-                                                TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(
-                                                          context, "true");
-                                                    },
-                                                    child: const Text(
-                                                      "Ekle",
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "NotoSansBold",
-                                                      ),
-                                                    ))
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          planNameInput.clear();
+                                                          planDescriptionInput
+                                                              .clear();
+                                                          Navigator.pop(
+                                                              context, "false");
+                                                        },
+                                                        child: const Text(
+                                                          "İptal",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "NotoSansBold",
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context, "true");
+                                                        },
+                                                        child: const Text(
+                                                          "Ekle",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "NotoSansBold",
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                  ],
+                                                )
                                               ],
                                             )
                                           ],

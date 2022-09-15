@@ -24,316 +24,460 @@ class _ShowGroupsState extends State<ShowGroups> {
     CollectionReference groupData = _firestore.collection("groups");
     CollectionReference data = _firestore.collection("brews");
     var userData = data.doc('${user!.email}');
-
     return Scaffold(
         body: Column(
       children: [
-        StreamBuilder<DocumentSnapshot>(
-            stream: userData.snapshots(),
+        StreamBuilder(
+            stream: groupData.snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.active) {
-                // List<DocumentSnapshot> doc = snapshot.data.docs;
-                var list = snapshot.data.data();
-                var groups = list['groups'];
+                List<DocumentSnapshot> doc = snapshot.data.docs;
                 return Column(
                   children: [
                     SizedBox(
-                        height: 300,
-                        child: ListView.builder(
-                          itemCount: groups.length,
-                          itemBuilder: (context, index) {
-                            if (groups.length == 0) {
-                              return Container();
-                            } else {
-                              return Column(
-                                children: [
-                                  StreamBuilder<QuerySnapshot>(
-                                    stream: groupData.snapshots(),
+                      height: MediaQuery.of(context).size.height * 0.87,
+                      child: ListView.builder(
+                        itemCount: doc.length,
+                        itemBuilder: (context, index) {
+                          if (doc.isEmpty) {
+                            return Container();
+                          } else {
+                            return Column(
+                              children: [
+                                StreamBuilder(
+                                    stream: userData.snapshots(),
                                     builder: (BuildContext context,
                                         AsyncSnapshot snapshot) {
                                       if (snapshot.hasData &&
                                           snapshot.connectionState ==
                                               ConnectionState.active) {
-                                        List<DocumentSnapshot> doc =
-                                            snapshot.data.docs;
-                                        if (user!.email ==
-                                            doc[index]['owner']) {
-                                          return Card(
-                                            child: ListTile(
-                                              title:
-                                                  Text("${doc[index]['name']}"),
-                                              subtitle: Text(
-                                                  "${doc[index]['members'].length}/${doc[index]['maximumMemberCount']}\n${doc[index]['description']}"),
-                                              trailing: IconButton(
-                                                  icon:
-                                                      const Icon(Icons.delete),
-                                                  onPressed: () async {
-                                                    var result =
-                                                        await showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                title:
-                                                                    const Text(
-                                                                  "Uyarı",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "NotoSansBold"),
-                                                                ),
-                                                                content: const Text(
-                                                                    "Grubu silmek istediğine emin misin?"),
-                                                                actions: [
-                                                                  TextButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.pop(
-                                                                            context,
-                                                                            'false');
-                                                                      },
-                                                                      child:
-                                                                          const Text(
-                                                                        "Hayır",
-                                                                        style: TextStyle(
-                                                                            fontFamily:
-                                                                                "NotoSansBold",
-                                                                            color:
-                                                                                Colors.red),
-                                                                      )),
-                                                                  TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context,
-                                                                          'true');
-                                                                    },
-                                                                    child:
-                                                                        const Text(
-                                                                      "Evet",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              "NotoSansBold",
-                                                                          color:
-                                                                              Colors.red),
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              );
-                                                            });
-                                                    if (result == 'true') {
-                                                      var data = groups[index];
-                                                      groups.remove(data);
-                                                      await userData.update(
-                                                          {'groups': groups});
-                                                      groupData
-                                                          .doc(data)
-                                                          .delete();
-                                                    }
-                                                  }),
-                                            ),
-                                          );
-                                        } else {
-                                          return Card(
-                                            child: ListTile(
+                                        var list = snapshot.data.data();
+                                        var groups = list['groups'];
+                                        if (doc[index]['members']
+                                                .contains(user!.email) &&
+                                            groups.contains(doc[index].id)) {
+                                          if (doc[index]["owner"] ==
+                                              user!.email) {
+                                            return Card(
+                                              child: ListTile(
                                                 title: Text(
                                                     "${doc[index]['name']}"),
                                                 subtitle: Text(
                                                     "${doc[index]['members'].length}/${doc[index]['maximumMemberCount']}\n${doc[index]['description']}"),
                                                 trailing: IconButton(
-                                                  icon: const Icon(Icons
-                                                      .exit_to_app_rounded),
-                                                  onPressed: () async {
-                                                    var result =
-                                                        await showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                title:
-                                                                    const Text(
-                                                                  "Uyarı",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "NotoSansBold"),
-                                                                ),
-                                                                content: const Text(
-                                                                    "Gruptan ayrılmak istediğine emin misin?"),
-                                                                actions: [
-                                                                  TextButton(
+                                                    icon: const Icon(
+                                                        Icons.delete),
+                                                    onPressed: () async {
+                                                      var result =
+                                                          await showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  title:
+                                                                      const Text(
+                                                                    "Uyarı",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "NotoSansBold"),
+                                                                  ),
+                                                                  content:
+                                                                      const Text(
+                                                                          "Grubu silmek istediğine emin misin?"),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context,
+                                                                              'false');
+                                                                        },
+                                                                        child:
+                                                                            const Text(
+                                                                          "Hayır",
+                                                                          style: TextStyle(
+                                                                              fontFamily: "NotoSansBold",
+                                                                              color: Colors.red),
+                                                                        )),
+                                                                    TextButton(
                                                                       onPressed:
                                                                           () {
                                                                         Navigator.pop(
                                                                             context,
-                                                                            'false');
+                                                                            'true');
                                                                       },
                                                                       child:
                                                                           const Text(
-                                                                        "Hayır",
+                                                                        "Evet",
                                                                         style: TextStyle(
                                                                             fontFamily:
                                                                                 "NotoSansBold",
                                                                             color:
                                                                                 Colors.red),
-                                                                      )),
-                                                                  TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context,
-                                                                          'true');
-                                                                    },
-                                                                    child:
-                                                                        const Text(
-                                                                      "Evet",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              "NotoSansBold",
-                                                                          color:
-                                                                              Colors.red),
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              );
-                                                            });
-                                                    if (result == 'true') {
-                                                      var members =
-                                                          doc[index]['members'];
-                                                      var data = groups[index];
-                                                      members
-                                                          .remove(user!.email);
-                                                      groups.remove(data);
-                                                      await userData.update(
-                                                          {'groups': groups});
-                                                      groupData
-                                                          .doc(data)
-                                                          .update({
-                                                        'members': members
-                                                      });
-                                                    }
-                                                  },
-                                                )),
-                                          );
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              });
+                                                      if (result == 'true') {
+                                                        var data =
+                                                            groups[index];
+                                                        var members = doc[index]
+                                                            ['members'];
+                                                        for (int x = 0;
+                                                            x < members.length;
+                                                            x++) {
+                                                          var gdata =
+                                                              (await _firestore
+                                                                  .collection(
+                                                                      "brews")
+                                                                  .doc(members[
+                                                                      x])
+                                                                  .get())['groups'];
+                                                          gdata.remove(data);
+                                                          await _firestore
+                                                              .collection(
+                                                                  "brews")
+                                                              .doc(members[x])
+                                                              .update({
+                                                            "groups": gdata
+                                                          });
+                                                        }
+                                                        groupData
+                                                            .doc(data)
+                                                            .delete();
+                                                      }
+                                                    }),
+                                              ),
+                                            );
+                                          } else {
+                                            return Card(
+                                              child: ListTile(
+                                                  title: Text(
+                                                      "${doc[index]['name']}"),
+                                                  subtitle: Text(
+                                                      "${doc[index]['members'].length}/${doc[index]['maximumMemberCount']}\n${doc[index]['description']}"),
+                                                  trailing: IconButton(
+                                                    icon: const Icon(Icons
+                                                        .exit_to_app_rounded),
+                                                    onPressed: () async {
+                                                      var result =
+                                                          await showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  title:
+                                                                      const Text(
+                                                                    "Uyarı",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "NotoSansBold"),
+                                                                  ),
+                                                                  content:
+                                                                      const Text(
+                                                                          "Gruptan ayrılmak istediğine emin misin?"),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context,
+                                                                              'false');
+                                                                        },
+                                                                        child:
+                                                                            const Text(
+                                                                          "Hayır",
+                                                                          style: TextStyle(
+                                                                              fontFamily: "NotoSansBold",
+                                                                              color: Colors.red),
+                                                                        )),
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context,
+                                                                            'true');
+                                                                      },
+                                                                      child:
+                                                                          const Text(
+                                                                        "Evet",
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                "NotoSansBold",
+                                                                            color:
+                                                                                Colors.red),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              });
+                                                      if (result == 'true') {
+                                                        var members = doc[index]
+                                                            ['members'];
+                                                        var data =
+                                                            doc[index].id;
+                                                        members.remove(
+                                                            user!.email);
+                                                        groups.remove(data);
+                                                        await userData.update(
+                                                            {'groups': groups});
+                                                        groupData
+                                                            .doc(data)
+                                                            .update({
+                                                          'members': members
+                                                        });
+                                                      }
+                                                    },
+                                                  )),
+                                            );
+                                          }
+                                        } else {
+                                          return Container();
                                         }
                                       } else {
                                         return Container();
                                       }
-                                    },
-                                  ),
-                                ],
-                              );
-                            }
-                          },
-                        )),
-                    SizedBox(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 350, left: 300),
-                        child: FloatingActionButton(
-                          backgroundColor: Colors.red,
-                          child: const Icon(Icons.add),
-                          onPressed: () async {
-                            var result = await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      "Grup Oluştur",
-                                      style:
-                                          TextStyle(fontFamily: "NotoSansBold"),
-                                    ),
-                                    actions: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: 250,
-                                            child: TextFormField(
-                                              controller: groupNameInput,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                hintText: "Grup İsmi",
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 250,
-                                            child: TextFormField(
-                                              controller: groupDescriptionInput,
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                hintText: "Grup Açıklaması",
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          SizedBox(
-                                            width: 250,
-                                            child: TextFormField(
-                                              controller: maxUserInput,
-                                              decoration: const InputDecoration(
-                                                  border: OutlineInputBorder(),
-                                                  hintText:
-                                                      "Maksimum kullanıcı sayısı"),
-                                            ),
-                                          ),
-                                          TextButton(
-                                              onPressed: () {
-                                                groupNameInput.clear();
-                                                groupDescriptionInput.clear();
-                                                maxUserInput.clear();
-                                                Navigator.pop(context, 'false');
-                                              },
-                                              child: const Text(
-                                                "İptal",
-                                                style: TextStyle(
-                                                  fontFamily: "NotoSansBold",
-                                                  color: Colors.red,
-                                                ),
-                                              )),
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context, 'true');
-                                              },
-                                              child: const Text(
-                                                "Oluştur",
-                                                style: TextStyle(
-                                                  fontFamily: "NotoSansBold",
-                                                  color: Colors.red,
-                                                ),
-                                              )),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                });
-                            if (result == "true") {
-                              var members = [user!.email];
-                              Map<String, dynamic> data = {
-                                "name": groupNameInput.text,
-                                "owner": "${user!.email}",
-                                "members": members,
-                                "maximumMemberCount":
-                                    int.parse(maxUserInput.text),
-                                "description": groupDescriptionInput.text
-                              };
-                              groupData.add(data).then(
-                                (value) async {
-                                  groups.add(value.id);
-                                  await userData.update({"groups": groups});
-                                },
-                              );
-                            }
-                          },
-                        ),
+                                    })
+                              ],
+                            );
+                          }
+                        },
                       ),
-                    )
+                    ),
+                    StreamBuilder(
+                        stream: userData.snapshots(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData &&
+                              snapshot.connectionState ==
+                                  ConnectionState.active) {
+                            var list = snapshot.data.data();
+                            var groups = list['groups'];
+                            return SizedBox(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 20, left: 300),
+                                child: FloatingActionButton(
+                                  backgroundColor: Colors.red,
+                                  child: const Icon(Icons.add),
+                                  onPressed: () async {
+                                    if (groups.length == 10) {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                "Uyarı",
+                                                style: TextStyle(
+                                                    fontFamily: "NotoSansBold",
+                                                    color: Colors.red),
+                                              ),
+                                              content: const Text(
+                                                  "Maksimum 10 tane gruba sahip olabilirsin."),
+                                              actions: [
+                                                TextButton(
+                                                  child: const Text(
+                                                    "Tamam",
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontFamily:
+                                                            "NotoSansBold"),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    } else {
+                                      var result = await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                "Grup Oluştur",
+                                                style: TextStyle(
+                                                    fontFamily: "NotoSansBold"),
+                                              ),
+                                              actions: [
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 50,
+                                                      child: TextFormField(
+                                                        controller:
+                                                            groupNameInput,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          labelText: "Grup Adı",
+                                                          labelStyle: TextStyle(
+                                                              color: Colors
+                                                                  .black54),
+                                                          border: OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color: Colors
+                                                                          .red)),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .red),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 50,
+                                                      child: TextFormField(
+                                                        controller:
+                                                            groupDescriptionInput,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          labelText:
+                                                              "Grup Açıklaması",
+                                                          labelStyle: TextStyle(
+                                                              color: Colors
+                                                                  .black54),
+                                                          border: OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color: Colors
+                                                                          .red)),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .red),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 50,
+                                                      child: TextFormField(
+                                                        controller:
+                                                            maxUserInput,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          labelText:
+                                                              "Maksimum Kullanıcı Sayısı",
+                                                          labelStyle: TextStyle(
+                                                              color: Colors
+                                                                  .black54),
+                                                          border: OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color: Colors
+                                                                          .red)),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .red),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              groupNameInput
+                                                                  .clear();
+                                                              groupDescriptionInput
+                                                                  .clear();
+                                                              maxUserInput
+                                                                  .clear();
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  'false');
+                                                            },
+                                                            child: const Text(
+                                                              "İptal",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "NotoSansBold",
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                            )),
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  'true');
+                                                            },
+                                                            child: const Text(
+                                                              "Oluştur",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "NotoSansBold",
+                                                                color:
+                                                                    Colors.red,
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                      if (result == "true") {
+                                        var members = [user!.email];
+                                        Map<String, dynamic> data = {
+                                          "name": groupNameInput.text,
+                                          "owner": "${user!.email}",
+                                          "members": members,
+                                          "maximumMemberCount":
+                                              int.parse(maxUserInput.text),
+                                          "description":
+                                              groupDescriptionInput.text
+                                        };
+                                        groupData.add(data).then(
+                                          (value) async {
+                                            groups.add(value.id);
+                                            await userData
+                                                .update({"groups": groups});
+                                          },
+                                        );
+                                        groupNameInput.clear();
+                                        groupDescriptionInput.clear();
+                                        maxUserInput.clear();
+                                      }
+                                    }
+                                  },
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        })
                   ],
                 );
               } else {

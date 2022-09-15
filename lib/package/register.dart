@@ -158,7 +158,6 @@ class _RegisterState extends State<Register> {
                               OutlinedButton(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    print(userInput.text);
                                     dynamic result =
                                         await _authService.registerENP(
                                       nameInput.text,

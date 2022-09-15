@@ -46,17 +46,20 @@ class _HomeState extends State<Home> {
             snapshot.connectionState == ConnectionState.active) {
           var list = snapshot.data.data();
           var courses = list['courses'];
+          var name = list['name'];
+          var class_ = list['class'];
+          var imageURL = list['imageURL'];
           List<Widget> greenWidget = <Widget>[];
           List<Widget> yellowWidget = <Widget>[];
           List<Widget> redWidget = <Widget>[];
 
           for (int x = 0; x < courses.length; x++) {
-            if (int.parse(courses[x]['abs']) < int.parse(courses[x]['max'])) {
+            // if (int.parse(courses[x]['abs']) < int.parse(courses[x]['max']))
+            if (courses[x]['abs'] < courses[x]['max']) {
               greenWidget.add(Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text("${courses[x]['courseCode']}")]));
-            } else if (int.parse(courses[x]['abs']) ==
-                int.parse(courses[x]['max'])) {
+            } else if ((courses[x]['abs']) == (courses[x]['max'])) {
               yellowWidget.add(Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text("${courses[x]['courseCode']}")]));
@@ -66,9 +69,7 @@ class _HomeState extends State<Home> {
                   children: [Text("${courses[x]['courseCode']}")]));
             }
           }
-          // print(courses);
-          var name = list['name'];
-          var class_ = list['class'];
+
           return Scaffold(
             backgroundColor: Colors.white,
             body: Column(
@@ -94,11 +95,11 @@ class _HomeState extends State<Home> {
                     Column(
                       children: <Widget>[
                         Row(
-                          children: const <Widget>[
+                          children: <Widget>[
                             CircleAvatar(
-                              backgroundImage:
-                                  AssetImage("assets/placeholder.jpg"),
-                              radius: 40,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: NetworkImage(imageURL),
+                              radius: 50,
                             )
                           ],
                         ),
@@ -159,7 +160,7 @@ class _HomeState extends State<Home> {
                                   "Devamsızlıklar",
                                   style: TextStyle(
                                     fontFamily: "ArabatoMedium",
-                                    fontSize: 18,
+                                    fontSize: 15,
                                   ),
                                 ),
                                 Row(
@@ -289,17 +290,17 @@ class _HomeState extends State<Home> {
                                   height: 10,
                                 ),
                                 const Text(
-                                  "Gruplar",
+                                  "Gruplar ve Dersler",
                                   style: TextStyle(
                                     fontFamily: "ArabatoMedium",
-                                    fontSize: 18,
+                                    fontSize: 15,
                                   ),
                                 ),
                                 Row(
                                   children: <Widget>[
                                     SizedBox(
                                       width: 200,
-                                      height: 150,
+                                      height: 180,
                                       child: Card(
                                         color: Colors.blue.withOpacity(0.15),
                                         shape: RoundedRectangleBorder(
@@ -326,11 +327,13 @@ class _HomeState extends State<Home> {
                                             const SizedBox(
                                               height: 7,
                                             ),
-                                            Row(
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: [
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
+                                                // const SizedBox(
+                                                //   width: 10,
+                                                // ),
                                                 StreamBuilder<QuerySnapshot>(
                                                   stream: groupData.snapshots(),
                                                   builder: (BuildContext
@@ -377,7 +380,7 @@ class _HomeState extends State<Home> {
                                     ),
                                     SizedBox(
                                       width: 100,
-                                      height: 150,
+                                      height: 180,
                                       child: Card(
                                         color: Colors.purple.withOpacity(0.1),
                                         shape: RoundedRectangleBorder(
@@ -402,11 +405,24 @@ class _HomeState extends State<Home> {
                                               ],
                                             ),
                                             Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: <Widget>[
-                                                const SizedBox(
-                                                  width: 15,
+                                                // const SizedBox(
+                                                //   width: 15,
+                                                // ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 27),
+                                                  child: Text(
+                                                    "${courses.length}",
+                                                    style: const TextStyle(
+                                                        fontFamily:
+                                                            "NotoSansBold",
+                                                        fontSize: 60),
+                                                  ),
                                                 ),
-                                                Text("${courses.length}"),
                                               ],
                                             )
                                           ],
@@ -427,7 +443,7 @@ class _HomeState extends State<Home> {
             ),
           );
         } else {
-          return Center(
+          return const Center(
               child: SpinKitWave(
             color: Colors.red,
           ));

@@ -47,7 +47,7 @@ class _ShowCoursesState extends State<ShowCourses> {
               return Column(
                 children: [
                   SizedBox(
-                    height: 300,
+                    height: MediaQuery.of(context).size.height * 0.87,
                     width: 400,
                     child: ListView.builder(
                       itemCount: courses.length,
@@ -75,9 +75,12 @@ class _ShowCoursesState extends State<ShowCourses> {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               SizedBox(
+                                                height: 50,
                                                 width: 250,
                                                 child: TextFormField(
                                                   controller: absInput,
+                                                  keyboardType:
+                                                      TextInputType.number,
                                                   decoration:
                                                       const InputDecoration(
                                                     border:
@@ -91,9 +94,12 @@ class _ShowCoursesState extends State<ShowCourses> {
                                                 height: 10,
                                               ),
                                               SizedBox(
+                                                height: 50,
                                                 width: 250,
                                                 child: TextFormField(
                                                   controller: maxInput,
+                                                  keyboardType:
+                                                      TextInputType.number,
                                                   decoration: const InputDecoration(
                                                       border:
                                                           OutlineInputBorder(),
@@ -101,41 +107,88 @@ class _ShowCoursesState extends State<ShowCourses> {
                                                           "Maksimum Devamsızlık"),
                                                 ),
                                               ),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(
-                                                        context, 'false');
-                                                  },
-                                                  child: const Text(
-                                                    "İptal",
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          "NotoSansBold",
-                                                      color: Colors.red,
-                                                    ),
-                                                  )),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(
-                                                        context, 'true');
-                                                  },
-                                                  child: const Text(
-                                                    "Kaydet",
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          "NotoSansBold",
-                                                      color: Colors.red,
-                                                    ),
-                                                  )),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(
+                                                            context, 'false');
+                                                        maxInput.clear();
+                                                        absInput.clear();
+                                                      },
+                                                      child: const Text(
+                                                        "İptal",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              "NotoSansBold",
+                                                          color: Colors.red,
+                                                        ),
+                                                      )),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(
+                                                            context, 'true');
+                                                      },
+                                                      child: const Text(
+                                                        "Kaydet",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              "NotoSansBold",
+                                                          color: Colors.red,
+                                                        ),
+                                                      )),
+                                                ],
+                                              ),
                                             ],
                                           ),
                                         ],
                                       );
                                     });
                                 if (result == "true") {
-                                  courses[index]['max'] = maxInput.text;
-                                  courses[index]['abs'] = absInput.text;
-                                  await userData.update({'courses': courses});
+                                  var maxInput_ = maxInput.text;
+                                  var absInput_ = absInput.text;
+                                  int max = 0;
+                                  int abs = 0;
+                                  try {
+                                    max = int.parse(maxInput_);
+                                    abs = int.parse(absInput_);
+                                    courses[index]['max'] = max;
+                                    courses[index]['abs'] = abs;
+                                    await userData.update({'courses': courses});
+                                  } catch (FormatException) {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                              "Uyarı",
+                                              style: TextStyle(
+                                                  fontFamily: "NotoSansBold",
+                                                  color: Colors.red),
+                                            ),
+                                            content: const Text(
+                                                "Devamsızlık kısmına sadece sayısal değer girebilirsin."),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text(
+                                                  "Tamam",
+                                                  style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontFamily:
+                                                          "NotoSansBold"),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  maxInput.clear();
+                                                  absInput.clear();
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        });
+                                  }
                                 }
                               },
                               title: Text(
@@ -199,112 +252,240 @@ class _ShowCoursesState extends State<ShowCourses> {
                   ),
                   SizedBox(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 350, left: 300),
+                      padding: const EdgeInsets.only(top: 20, left: 300),
                       child: FloatingActionButton(
                         onPressed: () async {
-                          var result = await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text(
-                                    "Ders Kayıt",
-                                    style:
-                                        TextStyle(fontFamily: "NotoSansBold"),
-                                  ),
-                                  actions: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: 250,
-                                          child: TextFormField(
-                                            controller: courseNameInput,
-                                            decoration: const InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              hintText: "Ders İsmi",
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 250,
-                                          child: TextFormField(
-                                            controller: courseCodeInput,
-                                            decoration: const InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              hintText: "Ders Kodu",
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        SizedBox(
-                                          width: 250,
-                                          child: TextFormField(
-                                            controller: absInput,
-                                            decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                hintText: "Mevcut Devamsızlık"),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 250,
-                                          child: TextFormField(
-                                            controller: maxInput,
-                                            decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                hintText:
-                                                    "Maksimum Devamsızlık"),
-                                          ),
-                                        ),
-                                        TextButton(
-                                            onPressed: () {
-                                              courseNameInput.clear();
-                                              courseCodeInput.clear();
-                                              absInput.clear();
-                                              maxInput.clear();
-                                              Navigator.pop(context, 'false');
-                                            },
-                                            child: const Text(
-                                              "İptal",
-                                              style: TextStyle(
-                                                fontFamily: "NotoSansBold",
-                                                color: Colors.red,
-                                              ),
-                                            )),
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context, 'true');
-                                            },
-                                            child: const Text(
-                                              "Ekle",
-                                              style: TextStyle(
-                                                fontFamily: "NotoSansBold",
-                                                color: Colors.red,
-                                              ),
-                                            )),
-                                      ],
+                          if (courses.length == 15) {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      "Uyarı",
+                                      style: TextStyle(
+                                          fontFamily: "NotoSansBold",
+                                          color: Colors.red),
                                     ),
-                                  ],
-                                );
-                              });
+                                    content: const Text(
+                                        "Maksimum 15 tane ders kaydın olabilir."),
+                                    actions: [
+                                      TextButton(
+                                        child: const Text(
+                                          "Tamam",
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontFamily: "NotoSansBold"),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          maxInput.clear();
+                                          absInput.clear();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+                          } else {
+                            var result = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      "Ders Kayıt",
+                                      style:
+                                          TextStyle(fontFamily: "NotoSansBold"),
+                                    ),
+                                    actions: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: 50,
+                                            child: TextFormField(
+                                              cursorColor: Colors.red,
+                                              controller: courseNameInput,
+                                              decoration: const InputDecoration(
+                                                labelText: "Ders İsmi",
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black54),
+                                                border: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.red)),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.red),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                            height: 50,
+                                            child: TextFormField(
+                                              cursorColor: Colors.red,
+                                              controller: courseCodeInput,
+                                              decoration: const InputDecoration(
+                                                labelText: "Ders Kodu",
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black54),
+                                                border: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.red)),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.red),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                            height: 50,
+                                            child: TextFormField(
+                                              cursorColor: Colors.red,
+                                              controller: absInput,
+                                              decoration: const InputDecoration(
+                                                labelText: "Mevcut Devamsızlık",
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black54),
+                                                border: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.red)),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.red),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                            height: 50,
+                                            child: TextFormField(
+                                              cursorColor: Colors.red,
+                                              controller: maxInput,
+                                              decoration: const InputDecoration(
+                                                labelText:
+                                                    "Maksimum Devamsızlık",
+                                                labelStyle: TextStyle(
+                                                    color: Colors.black54),
+                                                border: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.red)),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.red),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    courseNameInput.clear();
+                                                    courseCodeInput.clear();
+                                                    absInput.clear();
+                                                    maxInput.clear();
+                                                    Navigator.pop(
+                                                        context, 'false');
+                                                  },
+                                                  child: const Text(
+                                                    "İptal",
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          "NotoSansBold",
+                                                      color: Colors.red,
+                                                    ),
+                                                  )),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                        context, 'true');
+                                                  },
+                                                  child: const Text(
+                                                    "Ekle",
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          "NotoSansBold",
+                                                      color: Colors.red,
+                                                    ),
+                                                  )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                });
 
-                          if (result == 'true') {
-                            Map<String, dynamic> map = {
-                              "courseName": courseNameInput.text,
-                              "courseCode": courseCodeInput.text,
-                              "abs": absInput.text,
-                              "max": maxInput.text,
-                            };
-                            courses.add(map);
-                            courseNameInput.clear();
-                            courseCodeInput.clear();
-                            absInput.clear();
-                            maxInput.clear();
-                            await userData.update({'courses': courses});
+                            if (result == 'true') {
+                              int abs, max = 0;
+                              try {
+                                abs = int.parse(absInput.text);
+                                max = int.parse(maxInput.text);
+                                Map<String, dynamic> map = {
+                                  "courseName": courseNameInput.text,
+                                  "courseCode": courseCodeInput.text,
+                                  "abs": abs,
+                                  "max": max,
+                                };
+                                courses.add(map);
+                                courseNameInput.clear();
+                                courseCodeInput.clear();
+                                absInput.clear();
+                                maxInput.clear();
+                                await userData.update({'courses': courses});
+                              } catch (FormatException) {
+                                await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                          "Uyarı",
+                                          style: TextStyle(
+                                              fontFamily: "NotoSansBold",
+                                              color: Colors.red),
+                                        ),
+                                        content: const Text(
+                                            "Devamsızlık kısmına sadece sayısal değer girebilirsin."),
+                                        actions: [
+                                          TextButton(
+                                            child: const Text(
+                                              "Tamam",
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontFamily: "NotoSansBold"),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              maxInput.clear();
+                                              absInput.clear();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    });
+                              }
+                            }
                           }
                         },
                         backgroundColor: Colors.red,

@@ -91,8 +91,7 @@ class _ShowTasksState extends State<ShowTasks> {
                   return Column(
                     children: [
                       SizedBox(
-                        height: 300,
-                        width: 400,
+                        height: MediaQuery.of(context).size.height * 0.87,
                         child: ListView.builder(
                           itemCount: tasks.length,
                           itemBuilder: (context, index) {
@@ -119,14 +118,33 @@ class _ShowTasksState extends State<ShowTasks> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   SizedBox(
-                                                    width: 250,
+                                                    height: 50,
                                                     child: TextFormField(
-                                                      controller: taskNameInput,
+                                                      validator: (val) => val!
+                                                              .isEmpty
+                                                          ? "Görev adı boş bırakılamaz"
+                                                          : null,
+                                                      cursorColor: Colors.red,
+                                                      controller:
+                                                          taskDescriptionInput,
                                                       decoration:
                                                           const InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        hintText: "Görev İsmi",
+                                                        labelText: "Görev Adı",
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.black54),
+                                                        border: OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .red)),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .red),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -134,19 +152,38 @@ class _ShowTasksState extends State<ShowTasks> {
                                                     height: 10,
                                                   ),
                                                   SizedBox(
-                                                    width: 250,
+                                                    height: 50,
                                                     child: TextFormField(
+                                                      validator: (val) => val!
+                                                              .isEmpty
+                                                          ? "Görev açıklaması boş bırakılamaz"
+                                                          : null,
+                                                      cursorColor: Colors.red,
                                                       controller:
                                                           taskDescriptionInput,
-                                                      decoration: const InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          hintText:
-                                                              "Görev Açıklaması"),
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        labelText:
+                                                            "Görev Açıklaması",
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.black54),
+                                                        border: OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .red)),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .red),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    width: 250,
                                                     child: Row(
                                                       children: [
                                                         TextButton(
@@ -156,37 +193,52 @@ class _ShowTasksState extends State<ShowTasks> {
                                                                   context);
                                                             });
                                                           },
-                                                          child: Text("Tarih"),
+                                                          child: const Text(
+                                                            "Tarih",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontFamily:
+                                                                    "NotoSansBold"),
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(
-                                                            context, 'false');
-                                                      },
-                                                      child: const Text(
-                                                        "İptal",
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              "NotoSansBold",
-                                                          color: Colors.red,
-                                                        ),
-                                                      )),
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(
-                                                            context, 'true');
-                                                      },
-                                                      child: const Text(
-                                                        "Kaydet",
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              "NotoSansBold",
-                                                          color: Colors.red,
-                                                        ),
-                                                      )),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context,
+                                                                'false');
+                                                          },
+                                                          child: const Text(
+                                                            "İptal",
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  "NotoSansBold",
+                                                              color: Colors.red,
+                                                            ),
+                                                          )),
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context,
+                                                                'true');
+                                                          },
+                                                          child: const Text(
+                                                            "Kaydet",
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  "NotoSansBold",
+                                                              color: Colors.red,
+                                                            ),
+                                                          )),
+                                                    ],
+                                                  ),
                                                 ],
                                               )
                                             ],
@@ -265,7 +317,7 @@ class _ShowTasksState extends State<ShowTasks> {
                       ),
                       SizedBox(
                         child: Padding(
-                            padding: const EdgeInsets.only(top: 300, left: 300),
+                            padding: const EdgeInsets.only(top: 20, left: 300),
                             child: FloatingActionButton(
                               onPressed: () async {
                                 var result = await showDialog(
@@ -285,19 +337,30 @@ class _ShowTasksState extends State<ShowTasks> {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               SizedBox(
-                                                  width: 250,
+                                                  height: 50,
                                                   child: TextFormField(
+                                                    validator: (val) => val!
+                                                            .isEmpty
+                                                        ? "Görev adı boş bırakılamaz"
+                                                        : null,
                                                     controller: taskNameInput,
                                                     decoration:
                                                         const InputDecoration(
                                                       border:
                                                           OutlineInputBorder(),
-                                                      hintText: "Görev İsmi",
+                                                      hintText: "Görev Adı",
                                                     ),
                                                   )),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
                                               SizedBox(
-                                                  width: 250,
+                                                  height: 50,
                                                   child: TextFormField(
+                                                    validator: (val) => val!
+                                                            .isEmpty
+                                                        ? "Görev açıklaması boş bırakılamaz"
+                                                        : null,
                                                     controller:
                                                         taskDescriptionInput,
                                                     decoration:
@@ -319,38 +382,50 @@ class _ShowTasksState extends State<ShowTasks> {
                                                               context);
                                                         });
                                                       },
-                                                      child: Text("Tarih"),
+                                                      child: const Text(
+                                                        "Tarih",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "NotoSansBold",
+                                                            color: Colors.red),
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    taskNameInput.clear();
-                                                    taskDescriptionInput
-                                                        .clear();
-                                                    Navigator.pop(
-                                                        context, "false");
-                                                  },
-                                                  child: const Text(
-                                                    "İptal",
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          "NotoSansBold",
-                                                    ),
-                                                  )),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(
-                                                        context, "true");
-                                                  },
-                                                  child: const Text(
-                                                    "Ekle",
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          "NotoSansBold",
-                                                    ),
-                                                  ))
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        taskNameInput.clear();
+                                                        taskDescriptionInput
+                                                            .clear();
+                                                        Navigator.pop(
+                                                            context, "false");
+                                                      },
+                                                      child: const Text(
+                                                        "İptal",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "NotoSansBold",
+                                                            color: Colors.red),
+                                                      )),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(
+                                                            context, "true");
+                                                      },
+                                                      child: const Text(
+                                                        "Ekle",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "NotoSansBold",
+                                                            color: Colors.red),
+                                                      )),
+                                                ],
+                                              )
                                             ],
                                           )
                                         ],
@@ -377,7 +452,7 @@ class _ShowTasksState extends State<ShowTasks> {
                     ],
                   );
                 } else {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
               })
         ],

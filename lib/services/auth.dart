@@ -1,64 +1,68 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'database.dart';
-import "user.dart";
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  FUser? _userFromFirebaseUser(User user) {
-    // ignore: unnecessary_null_comparison
-    if (user != null) {
-      return FUser(userid: user.uid);
-    } else {
-      return null;
-    }
+  Future<User?> signIn(String email, String password) async {
+    // var user =
+    //     _auth.signInWithEmailAndPassword(email: email, password: password);
+    // return user.user;
+    UserCredential user = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    return user.user;
   }
 
-  Stream<FUser?> get user {
-    return _auth
-        .authStateChanges()
-        .map((User? user) => _userFromFirebaseUser(user!));
+  signOut() async {
+    return await _auth.signOut();
   }
 
-  Future registerENP(
-    String email,
-    String password,
-    String name,
-    String surname,
-  ) async {
-    try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      User? user = result.user;
-      await DatabaseService(userid: user!.uid).registerUserData(name, surname);
-      return _userFromFirebaseUser(user);
-    } catch (e) {
-      print(e.toString);
-      return null;
-    }
-  }
-
-  Future signENP(String email, String password) async {
-    try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      User? user = result.user;
-      return _userFromFirebaseUser(user!);
-    } catch (e) {
-      print(e.toString);
-      return null;
-    }
-  }
-
-  // Register
-
-  // Sign Out
-  Future signOut() async {
-    try {
-      return await _auth.signOut();
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
+  Future<User?> registerENP(String name, String surname, String email,
+      String password, String class_) async {
+    var plans = [
+      {
+        'dayName': "Pazartesi",
+        "plans": [],
+      },
+      {
+        'dayName': "Salı",
+        "plans": [],
+      },
+      {
+        'dayName': "Çarşamba",
+        "plans": [],
+      },
+      {
+        'dayName': "Perşembe",
+        "plans": [],
+      },
+      {
+        'dayName': "Cuma",
+        "plans": [],
+      },
+      {
+        'dayName': "Cumartesi",
+        "plans": [],
+      },
+      {
+        'dayName': "Pazar",
+        "plans": [],
+      },
+    ];
+    UserCredential user = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    await _firestore.collection("brews").doc(user.user?.email).set({
+      'name': "${name} ${surname}",
+      'email': email,
+      "class": class_,
+      "courses": [],
+      "groups": [],
+      "plans": plans,
+      "tasks": [],
+      "imageURL":
+          "https://firebasestorage.googleapis.com/v0/b/scheduleme-adde6.appspot.com/o/placeholder.jpg?alt=media&token=9cfa9b9d-eb60-409b-8a5f-b3b54a5c1b10"
+    });
+    return user.user;
   }
 }

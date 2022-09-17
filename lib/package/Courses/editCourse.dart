@@ -5,8 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../services/database.dart';
-import '../../services/user.dart';
+// import '../../services/database.dart';
+// import '../../services/user.dart';
 
 class CourseList {
   final String key;
@@ -97,84 +97,92 @@ class _EditCourseState extends State<EditCourse> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<FUser>(context);
+    return const Scaffold(
+        body: Center(child: SpinKitWave(color: Colors.red, size: 30)));
+    // final user = Provider.of<FUser>(context);
 
-    return StreamBuilder<UserData>(
-        stream: DatabaseService(userid: user.userid).userData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            UserData? userData = snapshot.data;
-            List<CourseList>? courseList = userData?.courses?.entries
-                .map((entry) => CourseList(entry.key, entry.value))
-                .toList();
-            print(courseList);
+    // return StreamBuilder<UserData>(
+    //     stream: DatabaseService(userid: user.userid).userData,
+    //     builder: (context, snapshot) {
+    //       if (snapshot.hasError) {
+    //         print(snapshot.error.toString());
 
-            return Scaffold(
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back_rounded),
-                  ),
-                  Column(
-                    children: [
-                      ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                        itemBuilder: (context, index) {
-                          final item = courseList![index];
+    //         UserData? userData = snapshot.data;
+    //         Map<String, dynamic>? courseList = userData?.courses;
+    //         // List<CourseList>? courseList = userData?.courses?.entries
+    //         //     .map((entry) => CourseList(entry.key, entry.value))
+    //         //     .toList();
+    //         // List<CourseList> courseList = userData!.courses!.entries
+    //         //     .map((e) => CourseList(e.key, e.value))
+    //         //     .toList();
+    //         // print(courseList);
 
-                          return ListTile(
-                            title: Text(item.key),
-                            subtitle: Text(item.value),
-                            trailing: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    showAlertDialog(context)
-                                        .then((value) async {
-                                      Map<String, dynamic> dict = value;
-                                      print(dict.keys.first);
-                                      print(dict.values.first);
-                                      print(courseList);
-                                      Map<String, dynamic>? courses =
-                                          userData!.courses;
+    //         return Scaffold(
+    //           body: Column(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: [
+    //               IconButton(
+    //                 onPressed: () {
+    //                   Navigator.pop(context);
+    //                 },
+    //                 icon: Icon(Icons.arrow_back_rounded),
+    //               ),
+    //               Column(
+    //                 children: [
+    //                   ListView.separated(
+    //                     scrollDirection: Axis.vertical,
+    //                     shrinkWrap: true,
+    //                     separatorBuilder: (BuildContext context, int index) =>
+    //                         const Divider(),
+    //                     itemBuilder: (context, index) {
+    //                       final item = courseList![index];
 
-                                      courses?.remove(item.key);
-                                      courses?[dict.keys.first] =
-                                          dict.values.first;
-                                      dynamic result =
-                                          DatabaseService(userid: user.userid)
-                                              .addAndChangeCourse(
-                                                  userData.name,
-                                                  userData.surname,
-                                                  courses,
-                                                  userData.groups,
-                                                  userData.plans);
-                                    });
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: Colors.blue[600],
-                                )),
-                          );
-                        },
-                        itemCount: courseList!.length,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }
+    //                       return ListTile(
+    //                         title: Text(item.key),
+    //                         subtitle: Text(item.value),
+    //                         trailing: IconButton(
+    //                             onPressed: () {
+    //                               setState(() {
+    //                                 showAlertDialog(context)
+    //                                     .then((value) async {
+    //                                   Map<String, dynamic> dict = value;
+    //                                   print(dict.keys.first);
+    //                                   print(dict.values.first);
+    //                                   print(courseList);
+    //                                   Map<String, dynamic>? courses =
+    //                                       userData?.courses;
 
-          return const Scaffold(
-              body: Center(child: SpinKitWave(color: Colors.red, size: 30)));
-        });
+    //                                   courses?.remove(item.key);
+    //                                   courses?[dict.keys.first] =
+    //                                       dict.values.first;
+    //                                   dynamic result =
+    //                                       DatabaseService(userid: user.userid)
+    //                                           .addAndChangeCourse(
+    //                                               userData?.name,
+    //                                               userData?.surname,
+    //                                               courses,
+    //                                               userData?.groups,
+    //                                               userData?.plans);
+    //                                 });
+    //                               });
+    //                             },
+    //                             icon: Icon(
+    //                               Icons.edit,
+    //                               color: Colors.blue[600],
+    //                             )),
+    //                       );
+    //                     },
+    //                     itemCount: courseList!.length,
+    //                   ),
+    //                 ],
+    //               ),
+    //             ],
+    //           ),
+    //         );
+    //       }
+
+    //       return const Scaffold(
+    //           body: Center(child: SpinKitWave(color: Colors.red, size: 30)));
+    //     });
   }
 }

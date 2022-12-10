@@ -40,7 +40,6 @@ class _LoginState extends State<Login> {
                     width: 300,
                     height: 65,
                     child: TextFormField(
-                      // maxLength: 20,
                       validator: (val) => val!.isEmpty
                           ? 'E-posta kısmı boş bırakılamaz.'
                           : null,
@@ -92,7 +91,6 @@ class _LoginState extends State<Login> {
                                 "/main",
                               );
                             });
-                            // Navigator.pushNamed(context, "/main");
                           }
                         }
                       },

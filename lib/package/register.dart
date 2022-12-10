@@ -25,11 +25,9 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        // mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 IconButton(
                     onPressed: () {
@@ -170,7 +168,6 @@ class _RegisterState extends State<Register> {
                                       setState(() => error =
                                           "Lütfen geçerli bir e-posta adresi giriniz.");
                                     } else {
-                                      // ignore: use_build_context_synchronously
                                       Navigator.popAndPushNamed(
                                           context, "/main");
                                     }

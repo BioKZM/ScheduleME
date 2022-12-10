@@ -51,7 +51,6 @@ class _ShowPlansState extends State<ShowPlans> {
                                 context, "/days${dayList[index]}");
                           },
                           title: Text(plans[index]["dayName"]),
-                          // subtitle: plans[index],
                         ));
                       },
                     ),

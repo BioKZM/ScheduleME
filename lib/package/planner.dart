@@ -70,7 +70,6 @@ class _PlannerState extends State<Planner> {
                                     Radius.circular(4),
                                   ),
                                 ),
-                                // elevation: 10,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -125,7 +124,6 @@ class _PlannerState extends State<Planner> {
                     const SizedBox(
                       width: 150,
                       height: 5,
-                      // color: Colors.red,
                       child: Divider(
                         color: Colors.grey,
                         thickness: 2,
@@ -136,7 +134,6 @@ class _PlannerState extends State<Planner> {
                       height: 25,
                     ),
                     GestureDetector(
-                      // onTap: () => print("qRnt"),
                       onTap: () {
                         Navigator.pushNamed(context, "/searchGroups");
                       },
@@ -145,7 +142,6 @@ class _PlannerState extends State<Planner> {
                           SizedBox(
                               width: 300,
                               height: 105,
-                              // color: Colors.red,
                               child: Card(
                                 color: const Color.fromARGB(235, 11, 192, 183)
                                     .withOpacity(0.2),

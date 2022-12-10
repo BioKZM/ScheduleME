@@ -20,7 +20,6 @@ class _Settings_State extends State<Settings_> {
   final _firestore = FirebaseFirestore.instance;
   final _firebase = FirebaseStorage.instance;
   User? user = FirebaseAuth.instance.currentUser;
-  // var nameVariable = "";
   var imageURL;
   bool swap = false;
   ImagePicker picker = ImagePicker();
@@ -61,7 +60,6 @@ class _Settings_State extends State<Settings_> {
                         controller: nameInput,
                         cursorColor: Colors.red,
                         decoration: const InputDecoration(
-                          // fillColor: Colors.red,
                           labelText: "İsim",
                           labelStyle: TextStyle(color: Colors.red),
                           border: OutlineInputBorder(

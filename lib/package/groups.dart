@@ -12,7 +12,6 @@ class _GroupsState extends State<Groups> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           IconButton(
               onPressed: () => Navigator.pop(context),

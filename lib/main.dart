@@ -2,23 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-// import 'package:provider/provider.dart';
-// import 'package:scheduleme/firebase_options.dart';
-// import 'package:scheduleme/package/Courses/deleteCourse.dart';
-// import 'package:scheduleme/package/Courses/editCourse.dart';
-// import 'package:scheduleme/package/StudyPlan/days.dart';
-// import 'package:scheduleme/package/StudyPlan/showPlans.dart';
-// import 'package:scheduleme/package/settings.dart';
 import 'package:flutter/services.dart';
 import 'package:scheduleme/package/Groups/showGroups.dart';
 import 'package:scheduleme/package/Groups/searchGroups.dart';
-// import 'package:scheduleme/package/Courses/test.dart';
 import 'package:scheduleme/package/StudyPlan/Days/daysMonday.dart';
-// import 'package:scheduleme/services/auth.dart';
-// import 'package:scheduleme/services/user.dart';
-// import 'package/Courses/addCourse.dart';
 import 'package/Courses/showCourses.dart';
-// import 'package/StudyPlan/addPlan.dart';
 import 'package/StudyPlan/Days/daysFriday.dart';
 import 'package/StudyPlan/Days/daysSaturday.dart';
 import 'package/StudyPlan/Days/daysSunday.dart';
@@ -37,11 +25,7 @@ import 'package/absenteeism.dart';
 import 'package/register.dart';
 import 'package/settings.dart';
 import 'globals.dart';
-// import 'package/test.dart';
-// import 'services/brewList.dart';
-// import 'services/database.dart';
 
-// void main() => runApp(Main());
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -66,16 +50,6 @@ class _HomeMainState extends State<HomeMain> {
     return MaterialApp(
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
       supportedLocales: const [Locale('en'), Locale('tr')],
-      // onGenerateRoute: (settings) {
-      //   if (settings.name == "/login") {
-      //     // setState(() {
-      //     //   Log.LoggedIn = false;
-      //     // });
-      //     final args = settings.arguments;
-      //     // List liste = ModalRoute.of(context)!.settings.arguments as List;
-      //     // var userEmail = liste[0];
-      //   }
-      // },
       title: "ScheduleME",
       initialRoute: "/loading",
       routes: {
@@ -89,17 +63,11 @@ class _HomeMainState extends State<HomeMain> {
         "/planner": (context) => const Planner(),
         "/groups": (context) => const Groups(),
         "/showGroups": (context) => const ShowGroups(),
-        // "/addCourse": (context) => const AddCourse(),
-        // "/editCourse": (context) => const EditCourse(),
-        // "/deleteCourse": (context) => const DeleteCourse(),
         "/searchGroups": (context) => const SearchGroups(),
         "/showCourses": (context) => const ShowCourses(),
         "/showPlans": (context) => const ShowPlans(),
         "/showTasks": (context) => const ShowTasks(),
-        // "/addPlan": (context) => const AddPlan(),
-        // "/days": (context) => const DaysPlan(),
         "/settings": (context) => const Settings_(),
-        // "/test": (context) => const Test(),
         "/daysMonday": (context) => const daysMonday(),
         "/daysTuesday": (context) => const daysTuesday(),
         "/daysWednesday": (context) => const daysWednesday(),
@@ -107,12 +75,9 @@ class _HomeMainState extends State<HomeMain> {
         "/daysFriday": (context) => const daysFriday(),
         "/daysSaturday": (context) => const daysSaturday(),
         "/daysSunday": (context) => const daysSunday(),
-        // "/brewList": (context) => BrewTile(),
-        // "/test": (context) => Test(),
       },
       home: const Loading(),
     );
-    // return const Loading();
   }
 }
 

@@ -69,7 +69,6 @@ class _daysSaturdayState extends State<daysSaturday> {
                                                             planNameInput,
                                                         decoration:
                                                             const InputDecoration(
-                                                          // fillColor: Colors.red,
                                                           labelText:
                                                               "Plan İsmi",
                                                           labelStyle: TextStyle(
@@ -100,7 +99,6 @@ class _daysSaturdayState extends State<daysSaturday> {
                                                             planDescriptionInput,
                                                         decoration:
                                                             const InputDecoration(
-                                                          // fillColor: Colors.red,
                                                           labelText:
                                                               "Plan Açıklaması",
                                                           labelStyle: TextStyle(
@@ -167,7 +165,6 @@ class _daysSaturdayState extends State<daysSaturday> {
                                             planNameInput.text;
                                         plans[index]['description'] =
                                             planDescriptionInput.text;
-                                        // plans.add(map);
                                         list['plans'][5]['plans'] = plans;
                                         planNameInput.clear();
                                         planDescriptionInput.clear();

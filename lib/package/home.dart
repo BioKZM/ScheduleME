@@ -13,11 +13,6 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-// getData() async {
-//   User? user = await FirebaseAuth.instance.currentUser;
-//   return user!.email;
-// }
-
 class _HomeState extends State<Home> {
   final _firestore = FirebaseFirestore.instance;
   final AuthService _auth = AuthService();
@@ -54,7 +49,6 @@ class _HomeState extends State<Home> {
           List<Widget> redWidget = <Widget>[];
 
           for (int x = 0; x < courses.length; x++) {
-            // if (int.parse(courses[x]['abs']) < int.parse(courses[x]['max']))
             if (courses[x]['abs'] < courses[x]['max']) {
               greenWidget.add(Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -331,9 +325,6 @@ class _HomeState extends State<Home> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                               children: [
-                                                // const SizedBox(
-                                                //   width: 10,
-                                                // ),
                                                 StreamBuilder<QuerySnapshot>(
                                                   stream: groupData.snapshots(),
                                                   builder: (BuildContext
@@ -408,9 +399,6 @@ class _HomeState extends State<Home> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: <Widget>[
-                                                // const SizedBox(
-                                                //   width: 15,
-                                                // ),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(

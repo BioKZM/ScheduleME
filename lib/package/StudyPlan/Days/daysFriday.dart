@@ -69,7 +69,6 @@ class _daysFridayState extends State<daysFriday> {
                                                             planNameInput,
                                                         decoration:
                                                             const InputDecoration(
-                                                          // fillColor: Colors.red,
                                                           labelText:
                                                               "Plan İsmi",
                                                           labelStyle: TextStyle(
@@ -100,7 +99,6 @@ class _daysFridayState extends State<daysFriday> {
                                                             planDescriptionInput,
                                                         decoration:
                                                             const InputDecoration(
-                                                          // fillColor: Colors.red,
                                                           labelText:
                                                               "Plan Açıklaması",
                                                           labelStyle: TextStyle(

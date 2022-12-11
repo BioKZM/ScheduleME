@@ -36,10 +36,26 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   )
                 ],
               ),
-              Row(
+              Column(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 200, 0, 0),
+                    child: Text(
+                      "Şifreni Sıfırla",
+                      style: TextStyle(
+                        fontSize: 32,
+                        color: Colors.black,
+                        fontFamily: "ArabatoNormal",
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 260, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 45, 0, 0),
                     child: Form(
                       key: _formKey,
                       child: Column(

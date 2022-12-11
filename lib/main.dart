@@ -16,15 +16,16 @@ import 'package/StudyPlan/Days/daysWednesday.dart';
 import 'package/StudyPlan/showPlans.dart';
 import 'package/Tasks/showTasks.dart';
 import 'package/courses.dart';
+import 'package/forgotPassword.dart';
 import 'package/groups.dart';
 import 'package/planner.dart';
 import 'package/login.dart';
 import 'package/home.dart';
 import 'package/loading.dart';
-import 'package/absenteeism.dart';
+// import 'package/absenteeism.dart';
 import 'package/register.dart';
 import 'package/settings.dart';
-import 'globals.dart';
+// import 'globals.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +47,7 @@ class HomeMain extends StatefulWidget {
 class _HomeMainState extends State<HomeMain> {
   @override
   Widget build(BuildContext context) {
-    var userEmail;
+    // var userEmail;
     return MaterialApp(
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
       supportedLocales: const [Locale('en'), Locale('tr')],
@@ -59,7 +60,7 @@ class _HomeMainState extends State<HomeMain> {
         "/main": (context) => const Main(),
         "/home": (context) => const Home(),
         "/courses": (context) => const Courses(),
-        "/absenteeism": (context) => const Absenteeism(),
+        "/forgotPassword": (context) => const ForgotPassword(),
         "/planner": (context) => const Planner(),
         "/groups": (context) => const Groups(),
         "/showGroups": (context) => const ShowGroups(),

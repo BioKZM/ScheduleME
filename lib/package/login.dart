@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scheduleme/package/home.dart';
 import 'package:scheduleme/services/auth.dart';
 
@@ -12,9 +15,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final userInput = TextEditingController();
   final passwordInput = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
   final AuthService _authService = AuthService();
+  final _formKey = GlobalKey<FormState>();
   String error = "";
 
   @override
@@ -36,7 +38,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SingleChildScrollView(
-                  child: Container(
+                  child: SizedBox(
                     width: 300,
                     height: 65,
                     child: TextFormField(
@@ -70,6 +72,38 @@ class _LoginState extends State<Login> {
                         hintText: "Şifre: ",
                       ),
                     )),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(216, 0, 0, 0),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        "/forgotPassword",
+                      );
+                      // FirebaseAuth.instance
+                      //     .sendPasswordResetEmail(email: userInput.text);
+                    },
+                    child: const Text(
+                      "Şifremi Unuttum",
+                      style: TextStyle(
+                          color: Colors.grey,
+                          decoration: TextDecoration.underline,
+                          fontSize: 13),
+                    ),
+                  ),
+                  // child: RichText(
+                  //     text: TextSpan(
+                  //   text: "Şifremi Unuttum",
+                  //   style: TextStyle(
+                  //     color: Colors.grey,
+                  //   ),
+                  // ))
+                  // child: Text("Şifremi Unuttum",
+                  //     style: TextStyle(
+                  //       color: Colors.grey,
+                  //       decoration: TextDecoration.underline,
+                  //     )),
+                ),
                 const SizedBox(
                   width: 0,
                   height: 20,
@@ -79,24 +113,35 @@ class _LoginState extends State<Login> {
                     ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          dynamic user = _authService.signIn(
-                              userInput.text, passwordInput.text);
-                          if (user == null) {
-                            setState(
-                                () => error = "E-posta veya şifre yanlış.");
-                          } else {
-                            Future.delayed(const Duration(seconds: 1), () {
-                              Navigator.pushNamed(
-                                context,
-                                "/main",
-                              );
-                            });
+                          try {
+                            dynamic user = await _authService.signIn(
+                                userInput.text, passwordInput.text);
+                            if (user != null) {
+                              Future.delayed(const Duration(seconds: 1), () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "/main",
+                                );
+                              });
+                            }
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == "wrong-password") {
+                              setState(
+                                  () => error = "E-posta veya şifre yanlış!");
+                            } else if (e.code == "invalid-email") {
+                              setState(() => error = "E-posta adresi yanlış!");
+                            } else if (e.code == "user-not-found") {
+                              setState(() => error = "Kullanıcı bulunamadı.");
+                            } else if (e.code == "user-disabled") {
+                              setState(() => error =
+                                  "Kullanıcı hesabı devre dışı bırakılmış.Lütfen desteğe başvur.");
+                            }
                           }
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        onPrimary: Colors.white,
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
                         minimumSize: const Size(129, 40),
                       ),
                       child: const Text("Giriş Yap"),
@@ -113,7 +158,7 @@ class _LoginState extends State<Login> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.red,
+                        foregroundColor: Colors.red,
                         minimumSize: const Size(129, 40),
                       ),
                       child: const Text("Kayıt Ol"),
@@ -122,6 +167,9 @@ class _LoginState extends State<Login> {
                 ),
                 Row(
                   children: <Widget>[
+                    const SizedBox(
+                      height: 25,
+                    ),
                     Text(
                       error,
                       style: const TextStyle(
@@ -130,7 +178,7 @@ class _LoginState extends State<Login> {
                           color: Colors.red),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

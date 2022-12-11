@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<User?> signIn(String email, String password) async {
-    // var user =
-    //     _auth.signInWithEmailAndPassword(email: email, password: password);
-    // return user.user;
+  // Future<User?> signIn(String email, String password) async {
+  //   UserCredential user = await _auth.signInWithEmailAndPassword(
+  //       email: email, password: password);
+  //   return user.user;
+  // }
+  Future signIn(String email, String password) async {
     UserCredential user = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
     return user.user;

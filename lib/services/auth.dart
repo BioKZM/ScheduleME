@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -56,7 +55,7 @@ class AuthService {
     UserCredential user = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     await _firestore.collection("brews").doc(user.user?.email).set({
-      'name': "${name} ${surname}",
+      'name': "$name $surname",
       'email': email,
       "class": class_,
       "courses": [],

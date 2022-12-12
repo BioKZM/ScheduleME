@@ -1,8 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:scheduleme/package/home.dart';
 import 'package:scheduleme/services/auth.dart';
 
 class Login extends StatefulWidget {
@@ -73,7 +70,7 @@ class _LoginState extends State<Login> {
                       ),
                     )),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(216, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(216, 0, 0, 0),
                   child: TextButton(
                     onPressed: () {
                       Navigator.pushNamed(
@@ -91,18 +88,6 @@ class _LoginState extends State<Login> {
                           fontSize: 13),
                     ),
                   ),
-                  // child: RichText(
-                  //     text: TextSpan(
-                  //   text: "Şifremi Unuttum",
-                  //   style: TextStyle(
-                  //     color: Colors.grey,
-                  //   ),
-                  // ))
-                  // child: Text("Şifremi Unuttum",
-                  //     style: TextStyle(
-                  //       color: Colors.grey,
-                  //       decoration: TextDecoration.underline,
-                  //     )),
                 ),
                 const SizedBox(
                   width: 0,

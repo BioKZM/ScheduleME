@@ -1,10 +1,9 @@
+// ignore_for_file: file_names, depend_on_referenced_packages
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 
 class ShowTasks extends StatefulWidget {
   const ShowTasks({Key? key}) : super(key: key);
@@ -49,10 +48,13 @@ class _ShowTasksState extends State<ShowTasks> {
 
   Future _selectDateTime(BuildContext context) async {
     final date = await _selectDate(context);
+    // ignore: unnecessary_null_comparison
     if (date == null) return;
 
+    // ignore: use_build_context_synchronously
     final time = await _selectTime(context);
 
+    // ignore: unnecessary_null_comparison
     if (time == null) return;
     setState(() {
       dateTime = DateTime(

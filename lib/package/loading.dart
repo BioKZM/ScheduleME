@@ -15,9 +15,9 @@ class _LoadingState extends State<Loading> {
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      return Login();
+      return const Login();
     } else {
-      return Main();
+      return const Main();
     }
   }
 }

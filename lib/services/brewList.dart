@@ -1,17 +1,19 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scheduleme/services/brew.dart';
 
 class BrewTile extends StatelessWidget {
   final Brew? brew;
-  BrewTile({this.brew});
+  const BrewTile({super.key, this.brew});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(top: 8.0),
+        padding: const EdgeInsets.only(top: 8.0),
         child: Card(
-          margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
+          margin: const EdgeInsets.fromLTRB(20, 6, 20, 0),
           child: ListTile(
             leading: CircleAvatar(
               radius: 25,
@@ -35,11 +37,6 @@ class _BrewListState extends State<BrewList> {
   @override
   Widget build(BuildContext context) {
     final brews = Provider.of<List<Brew>>(context);
-    brews.forEach((brew) {
-      print(brew.name);
-      print(brew.sugars);
-      print(brew.strength.toString());
-    });
     return ListView.builder(
       itemCount: brews.length,
       itemBuilder: (context, index) {

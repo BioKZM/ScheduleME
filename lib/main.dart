@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,20 +21,16 @@ import 'package/planner.dart';
 import 'package/login.dart';
 import 'package/home.dart';
 import 'package/loading.dart';
-// import 'package/absenteeism.dart';
 import 'package/register.dart';
 import 'package/settings.dart';
-// import 'globals.dart';
+
+ThemeChanger theme = ThemeChanger();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const HomeMain());
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: []);
-}
-
-class Log {
-  static bool LoggedIn = true;
 }
 
 class HomeMain extends StatefulWidget {
@@ -51,6 +46,9 @@ class _HomeMainState extends State<HomeMain> {
     return MaterialApp(
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
       supportedLocales: const [Locale('en'), Locale('tr')],
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.light(),
+      themeMode: theme.currentTheme(),
       title: "ScheduleME",
       initialRoute: "/loading",
       routes: {

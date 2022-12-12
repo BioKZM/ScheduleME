@@ -1,9 +1,8 @@
+// ignore_for_file: camel_case_types, file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 
 class daysSaturday extends StatefulWidget {
   const daysSaturday({Key? key}) : super(key: key);

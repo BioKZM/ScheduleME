@@ -1,8 +1,8 @@
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class SearchGroups extends StatefulWidget {
   const SearchGroups({Key? key}) : super(key: key);
@@ -128,6 +128,7 @@ class _SearchGroupsState extends State<SearchGroups> {
                                             doc[index]['maximumMemberCount']) {
                                           var members = doc[index]['members'];
                                           members.add(user!.email);
+                                          // ignore: no_leading_underscores_for_local_identifiers
                                           var _data = await userData.get();
                                           var groups = _data['groups'];
                                           groups.add(doc[index].id);

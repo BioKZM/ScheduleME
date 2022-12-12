@@ -1,7 +1,7 @@
+// ignore_for_file: file_names
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});

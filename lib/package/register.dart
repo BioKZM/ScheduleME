@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import '../services/auth.dart';
 
@@ -27,14 +25,13 @@ class _RegisterState extends State<Register> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Column(
-              children: <Widget>[
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back_rounded)),
-              ]),
+          Column(children: <Widget>[
+            IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_rounded)),
+          ]),
           const SizedBox(
             height: 70,
           ),
@@ -108,7 +105,7 @@ class _RegisterState extends State<Register> {
                             height: 20,
                           ),
                           SingleChildScrollView(
-                            child: Container(
+                            child: SizedBox(
                               width: 300,
                               height: 65,
                               child: TextFormField(
@@ -168,14 +165,15 @@ class _RegisterState extends State<Register> {
                                       setState(() => error =
                                           "Lütfen geçerli bir e-posta adresi giriniz.");
                                     } else {
+                                      // ignore: use_build_context_synchronously
                                       Navigator.popAndPushNamed(
                                           context, "/main");
                                     }
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.red,
-                                  onPrimary: Colors.white,
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.red,
                                   minimumSize: const Size(129, 40),
                                 ),
                                 child: const Text("Kayıt Ol"),

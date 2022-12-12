@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +6,23 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+class ThemeChanger with ChangeNotifier {
+  static bool isDarkTheme = false;
+  ThemeMode currentTheme() {
+    if (isDarkTheme) {
+      return ThemeMode.light;
+    } else {
+      return ThemeMode.dark;
+    }
+  }
+
+  void switchTheme() {
+    isDarkTheme != isDarkTheme;
+    notifyListeners();
+  }
+}
+
+// ignore: camel_case_types
 class Settings_ extends StatefulWidget {
   const Settings_({Key? key}) : super(key: key);
 
@@ -14,12 +30,14 @@ class Settings_ extends StatefulWidget {
   State<Settings_> createState() => _Settings_State();
 }
 
+// ignore: camel_case_types
 class _Settings_State extends State<Settings_> {
   TextEditingController nameInput = TextEditingController();
   TextEditingController classInput = TextEditingController();
   final _firestore = FirebaseFirestore.instance;
   final _firebase = FirebaseStorage.instance;
   User? user = FirebaseAuth.instance.currentUser;
+  // ignore: prefer_typing_uninitialized_variables
   var imageURL;
   bool swap = false;
   ImagePicker picker = ImagePicker();
